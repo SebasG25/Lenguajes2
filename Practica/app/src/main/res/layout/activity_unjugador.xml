@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UnJugadorActivity">
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textStyle="bold"
+            android:textSize="50dp"
+            android:textAlignment="center"
+    ></TextView>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:singleLine="true"
+            android:layout_marginTop="100dp"
+            android:id="@+id/txtCorreo"
+    ></EditText>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:singleLine="true"
+            android:id="@+id/txtContraseña"
+    ></EditText>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="Iniciar sesión"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:id="@+id/btnIniciarSesion"></Button>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="Registrarse"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:id="@+id/btnRegistro"></Button>
+
+</LinearLayout>
