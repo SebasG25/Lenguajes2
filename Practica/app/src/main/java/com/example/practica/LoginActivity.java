@@ -40,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
                             }else{
                                 setNombreJugador2(correo);
                             }
-
-                            archivo.leer();
                             Toast.makeText(LoginActivity.this, "Usuario Logueado", Toast.LENGTH_SHORT).show();
                             txtCorreo.setText("");
                             txtContraseña.setText("");
@@ -66,12 +64,12 @@ public class LoginActivity extends AppCompatActivity {
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txtCorreo.getText().toString() == "" || txtContraseña.getText().toString() == "") {
+                if (txtCorreo.getText().toString().isEmpty() || txtContraseña.getText().toString().isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Debe llenar obligatoriamente todos los campos", Toast.LENGTH_LONG).show();
                 } else {
                     String correo = txtCorreo.getText().toString();
                     String contraseña = txtContraseña.getText().toString();
-                    String texto = correo + "\n" + contraseña + "\n";
+                    String texto = "\n\n" + correo + "\n" + contraseña;
 
                     txtCorreo.setText("");
                     txtContraseña.setText("");
@@ -79,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(!archivo.buscarCuenta(correo, contraseña)){
                         try {
                             archivo.escribir(texto);
+                            Toast.makeText(LoginActivity.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Log.e("", e.getMessage());
                         }

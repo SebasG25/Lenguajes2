@@ -3,10 +3,12 @@ package com.example.practica;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Carchivos {
 
@@ -62,18 +64,22 @@ public class Carchivos {
             int cont = 0;
             fis = ctx.openFileInput(Archivo);
             int i = fis.read();
-            char caracter;
+            char caracter = 'a';
             while (i > 0) {
-                if (cont % 2 == 0 && i != ' ') {
-                    caracter = (char) i;
-                    lecturaCorreo += caracter;
-                    if(lecturaCorreo.equals(correo)){
-                        i = fis.read();
-                        cont++;
+                if (cont % 2 == 0 && i != '\n') {
+                    while (i > 0) {
                         caracter = (char) i;
-                        lecturaContraseña += caracter;
-                        if(lecturaContraseña.equals(contraseña)){
-                            return true;
+                        lecturaCorreo += caracter;
+                        i = fis.read();
+                    }
+                    if (lecturaCorreo.equals(correo)) {
+                        while (i > 0) {
+                            cont++;
+                            caracter = (char) i;
+                            lecturaContraseña += caracter;
+                            if (lecturaContraseña.equals(contraseña)) {
+                                return true;
+                            }
                         }
                     }
                 }
