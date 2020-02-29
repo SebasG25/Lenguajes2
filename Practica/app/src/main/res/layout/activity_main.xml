@@ -9,48 +9,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/holo_red_light"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="BIENVENIDO"
-            android:textSize="50dp"
-            android:textStyle="bold"
-            ></TextView>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:text="EL JUEGO DE PREGUNTAS"
             android:textAlignment="center"
-            android:text="¿Cómo deseas jugar?"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            ></TextView>
+            android:textColor="@android:color/primary_text_dark_nodisable"
+            android:textSize="35dp"
+            android:textStyle="bold"></TextView>
 
         <Button
-            android:layout_gravity="center"
+            android:id="@+id/btnJugar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="250dp"
-            android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
-            android:text="Un jugador"
-            android:id="@+id/btnUnJugador"
+            android:drawableRight="@drawable/ic_jugar"
+            android:drawablePadding="5dp"
+            android:text="Jugar"
 
             ></Button>
 
         <Button
+            android:id="@+id/btnPuntaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dos jugadores"
-            android:id="@+id/btnDosJugadores"
-            ></Button>
+            android:drawableRight="@drawable/ic_puntajes"
+            android:drawablePadding="5dp"
+            android:text="Puntajes"></Button>
 
 
     </LinearLayout>

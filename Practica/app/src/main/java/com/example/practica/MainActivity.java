@@ -9,24 +9,26 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnUnJugador, btnDosJugadores;
+    Button btnJugar, btnRegistro, btnPuntajes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         conectar();
 
-        btnUnJugador.setOnClickListener(new View.OnClickListener() {
+        btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent vistaUnJugador = new Intent(getApplicationContext(), UnJugadorActivity.class);
-                startActivity(vistaUnJugador);
+                Intent vistaLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(vistaLogin);
             }
         });
     }
 
     private void conectar() {
-        btnUnJugador = findViewById(R.id.btnUnJugador);
-        btnDosJugadores = findViewById(R.id.btnDosJugadores);
+        btnJugar = findViewById(R.id.btnJugar);
+        btnRegistro = findViewById(R.id.btnRegistro);
+        btnPuntajes = findViewById(R.id.btnPuntaje);
     }
 }
