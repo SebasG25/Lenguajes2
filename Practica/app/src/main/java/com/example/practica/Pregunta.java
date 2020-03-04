@@ -2,7 +2,6 @@ package com.example.practica;
 
 public class Pregunta {
 
-    private Pregunta[] bancoPreguntas;
     private String pregunta;
     private String opcion1;
     private String opcion2;
@@ -17,13 +16,10 @@ public class Pregunta {
         this.setOpcion2(opcion2);
         this.setOpcion3(opcion3);
         this.setOpcion4(opcion4);
-        this.setOpcionCorrecta(opcionCorrecta);
         this.setPuntaje(puntaje);
+        this.setOpcionCorrecta(opcionCorrecta);
     }
 
-    public Pregunta(Pregunta[] banco){
-        setBancoPreguntas(banco);
-    }
 
     public String getPregunta() {
         return pregunta;
@@ -81,11 +77,4 @@ public class Pregunta {
         this.opcionCorrecta = opcionCorrecta;
     }
 
-    public Pregunta[] getBancoPreguntas() {
-        return bancoPreguntas;
-    }
-
-    public void setBancoPreguntas(Pregunta[] bancoPreguntas) {
-        this.bancoPreguntas = bancoPreguntas;
-    }
 }

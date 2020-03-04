@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RespuestaActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#FFFF00"
+        android:textAlignment="gravity"
+        android:hint="Pregunta"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:id="@+id/tvPregunta"></TextView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textSize="20dp"
+        android:hint="Opcion 1"
+        android:id="@+id/btnOpcion1"></Button>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textSize="20dp"
+        android:hint="Opcion 2"
+        android:id="@+id/btnOpcion2"></Button>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textSize="20dp"
+        android:hint="Opcion 3"
+        android:id="@+id/btnOpcion3"></Button>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textSize="20dp"
+        android:hint="Opcion 4"
+        android:id="@+id/btnOpcion4"></Button>
+</LinearLayout>
