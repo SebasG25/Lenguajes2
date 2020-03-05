@@ -11,14 +11,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Carchivos {
+public class Carchivos implements Serializable {
 
     String Archivo;
     Context ctx;
-
     FileOutputStream fos;
     FileInputStream fis;
 
@@ -36,6 +36,18 @@ public class Carchivos {
             Log.e("", e.getMessage());
         } catch (IOException ex) {
             Log.e("", ex.getMessage());
+        }
+    }
+
+    public void escribir() throws IOException{
+        try {
+            fos = ctx.openFileOutput(Archivo, Context.MODE_APPEND);
+            fos.write('\n');
+            fos.close();
+        }catch(FileNotFoundException e){
+            Log.e("", e.getMessage());
+        }catch(IOException ex){
+            Log.e("",ex.getMessage());
         }
     }
 
@@ -70,7 +82,7 @@ public class Carchivos {
             int cont = 0;
             fis = ctx.openFileInput(Archivo);
             int i = 2;
-            char caracter = 'a';
+            char caracter;
             while (i > 0) {
                 i = fis.read();
                 caracter = (char) i;
@@ -96,13 +108,13 @@ public class Carchivos {
     public ArrayList<Pregunta> listaPreguntas() {
         ArrayList<Pregunta> lista = new ArrayList<>();
         String lectura = "";
-        String pregunta = "", opcion1 = "", opcion2 = "", opcion3 = "", opcion4 = "", opcionCorrecta;
+        String pregunta = "", opcion1 = "", opcion2 = "", opcion3 = "", opcion4 = "", opcionCorrecta = "";
         int valor = 0;
         try {
             int cont = 0;
             fis = ctx.openFileInput(Archivo);
-            int i = 2;
-            char caracter = 'a';
+            int i = 6;
+            char caracter;
             while (i > 0) {
                 i = fis.read();
                 caracter = (char) i;
@@ -113,11 +125,11 @@ public class Carchivos {
                     } else if(cont == 1){
                         opcion1 = lectura.trim();
                     }else if(cont == 2){
-                        opcion1 = lectura.trim();
+                        opcion2 = lectura.trim();
                     }else if(cont == 3){
-                        opcion1 = lectura.trim();
+                        opcion3 = lectura.trim();
                     }else if(cont == 4){
-                        opcion1 = lectura.trim();
+                        opcion4 = lectura.trim();
                     }else if(cont == 5){
                         valor = Integer.parseInt(lectura.trim());
                     }else if(cont == 6){
@@ -134,4 +146,5 @@ public class Carchivos {
         }
         return lista;
     }
+
 }

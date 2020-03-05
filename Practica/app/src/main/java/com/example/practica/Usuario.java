@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 public class Usuario {
 
-    private String nombre;
+    private  String nombre;
     private String contraseña;
 
     public Usuario(String nombre, String contraseña) {
         this.setNombre(nombre);
         this.setContraseña(contraseña);
     }
-
 
     public String getNombre() {
         return nombre;

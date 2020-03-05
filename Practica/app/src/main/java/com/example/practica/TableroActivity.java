@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,12 +13,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TableroActivity extends AppCompatActivity {
+    Random random = new Random();
+    int cantidadPreguntas;
     int contTurno = 0;
+    Pregunta preguntaActual;
+    Button actual;
+    String correcta;
+    String respuestaUsuario, resultado;
+    int puntajeActual;
+    ArrayList<Pregunta> preguntas;
     String[] nombresJugadores = new String[2];
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20;
-    TextView nombreJugador1, nombreJugador2;
-    Carchivos archivo;
-
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20, btnOpcion1, btnOpcion2, btnOpcion3, btnOpcion4;
+    TextView nombreJugador1, nombreJugador2, tvPregunta;
+    Carchivos archivos = new Carchivos(this, "Preguntas.txt");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +35,130 @@ public class TableroActivity extends AppCompatActivity {
         nombresJugadores = recup.getStringArray("Nombres");
         nombreJugador1.setText(nombresJugadores[0]);
         nombreJugador2.setText(nombresJugadores[1]);
+
+        preguntas = listaPreguntas();
+        cantidadPreguntas = preguntas.size();
+
+        btnOpcion1.setEnabled(false);
+        btnOpcion2.setEnabled(false);
+        btnOpcion3.setEnabled(false);
+        btnOpcion4.setEnabled(false);
+
+        btnOpcion1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnOpcion1.setEnabled(false);
+                btnOpcion2.setEnabled(false);
+                btnOpcion3.setEnabled(false);
+                btnOpcion4.setEnabled(false);
+                respuestaUsuario = btnOpcion1.getText().toString().trim();
+                tvPregunta.setText("Pregunta");
+                btnOpcion1.setText("Opcion 1");
+                btnOpcion2.setText("Opcion 2");
+                btnOpcion3.setText("Opcion 3");
+                btnOpcion4.setText("Opcion 4");
+                if(respuestaValida()){
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.verde);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                }else{
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.rojo);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnOpcion2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnOpcion1.setEnabled(false);
+                btnOpcion2.setEnabled(false);
+                btnOpcion3.setEnabled(false);
+                btnOpcion4.setEnabled(false);
+                respuestaUsuario = btnOpcion2.getText().toString().trim();
+                tvPregunta.setText("Pregunta");
+                btnOpcion1.setText("Opcion 1");
+                btnOpcion2.setText("Opcion 2");
+                btnOpcion3.setText("Opcion 3");
+                btnOpcion4.setText("Opcion 4");
+                if(respuestaValida()){
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.verde);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
+                }else{
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.rojo);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnOpcion3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnOpcion1.setEnabled(false);
+                btnOpcion2.setEnabled(false);
+                btnOpcion3.setEnabled(false);
+                btnOpcion4.setEnabled(false);
+                respuestaUsuario = btnOpcion3.getText().toString().trim();
+                tvPregunta.setText("Pregunta");
+                btnOpcion1.setText("Opcion 1");
+                btnOpcion2.setText("Opcion 2");
+                btnOpcion3.setText("Opcion 3");
+                btnOpcion4.setText("Opcion 4");
+                if(respuestaValida()){
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.verde);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
+                }else{
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.rojo);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnOpcion4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnOpcion1.setEnabled(false);
+                btnOpcion2.setEnabled(false);
+                btnOpcion3.setEnabled(false);
+                btnOpcion4.setEnabled(false);
+                respuestaUsuario = btnOpcion4.getText().toString().trim();
+                tvPregunta.setText("Pregunta");
+                btnOpcion1.setText("Opcion 1");
+                btnOpcion2.setText("Opcion 2");
+                btnOpcion3.setText("Opcion 3");
+                btnOpcion4.setText("Opcion 4");
+                if(respuestaValida()){
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.verde);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
+                }else{
+                    actual.setEnabled(false);
+                    actual.setBackgroundColor(R.drawable.rojo);
+                    preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
+                    cantidadPreguntas--;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,103 +302,323 @@ public class TableroActivity extends AppCompatActivity {
     }
 
     private void boton1(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn1;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton2(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn2;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton3(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn3;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton4(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn4;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton5(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn5;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton6(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn6;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton7(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn7;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton8(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn8;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton9(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn9;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton10(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn10;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton11(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn11;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton12(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn12;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton13(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn13;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton14(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn14;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton15(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn15;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton16(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn16;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton17(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn17;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton18(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn18;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton19(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn19;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private void boton20(){
-        Intent respuesta = new Intent(getApplicationContext(), RespuestaActivity.class);
-        startActivity(respuesta);
+        actual = btn20;
+        preguntaActual = sortearPregunta();
+        puntajeActual = preguntaActual.getPuntaje();
+        correcta = preguntaActual.getOpcionCorrecta();
+        tvPregunta.setText(preguntaActual.getPregunta());
+        btnOpcion1.setEnabled(true);
+        btnOpcion2.setEnabled(true);
+        btnOpcion3.setEnabled(true);
+        btnOpcion4.setEnabled(true);
+        btnOpcion1.setText(preguntaActual.getOpcion1());
+        btnOpcion2.setText(preguntaActual.getOpcion2());
+        btnOpcion3.setText(preguntaActual.getOpcion3());
+        btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
     private boolean esTurnoJugador1(){
@@ -300,17 +652,38 @@ public class TableroActivity extends AppCompatActivity {
         btn18 = findViewById(R.id.btn18);
         btn19 = findViewById(R.id.btn19);
         btn20 = findViewById(R.id.btn20);
-    }
-
-    private Pregunta sortearPregunta(){
-        Random random = new Random();
-        int posicion = random.nextInt(listaPreguntas().size());
-        Pregunta pregunta = listaPreguntas().get(posicion);
-        listaPreguntas().remove(posicion);
-        return pregunta;
+        btnOpcion1 = findViewById(R.id.btnOpcion1);
+        btnOpcion2 = findViewById(R.id.btnOpcion2);
+        btnOpcion3 = findViewById(R.id.btnOpcion3);
+        btnOpcion4 = findViewById(R.id.btnOpcion4);
+        tvPregunta = findViewById(R.id.tvPregunta);
     }
 
     private ArrayList<Pregunta> listaPreguntas(){
-        return archivo.listaPreguntas();
+        return archivos.listaPreguntas();
+    }
+
+
+    private Pregunta sortearPregunta(){
+        int posicion = random.nextInt();
+        Pregunta pregunta = preguntas.get(posicion);
+        return pregunta;
+    }
+
+    private boolean respuestaValida(){
+        if(preguntaActual.getOpcionCorrecta().equals(respuestaUsuario)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private Pregunta getPosicionPregunta(ArrayList<Pregunta> preguntas, Pregunta pregunta){
+        for(int i = 0; i < preguntas.size(); i++){
+            if(preguntas.get(i) == pregunta){
+                return preguntas.get(i);
+            }
+        }
+        return null;
     }
 }
