@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".LoginActivity"
-    android:background="@android:color/holo_red_light">
+    android:background="@drawable/fondo">
 
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
+        android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="50dp"
             android:textAlignment="center"
@@ -28,6 +29,7 @@
             android:singleLine="true"
             android:layout_marginTop="100dp"
             android:id="@+id/txtCorreo"
+            android:drawableLeft="@drawable/ic_nombre"
     ></EditText>
 
     <EditText
@@ -39,9 +41,11 @@
             android:textSize="30dp"
             android:singleLine="true"
             android:id="@+id/txtContraseña"
+            android:drawableLeft="@drawable/ic_contrasena"
     ></EditText>
 
     <Button
+            android:background="@drawable/boton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="Iniciar sesión"
@@ -50,6 +54,7 @@
             android:id="@+id/btnIniciarSesion"></Button>
 
     <Button
+            android:background="@drawable/boton"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:text="Registrarse"

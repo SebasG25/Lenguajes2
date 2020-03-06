@@ -2,6 +2,9 @@ package com.example.practica;
 
 public class Pregunta {
 
+    /*
+        Atributos de la clase pregunta
+     */
     private String pregunta;
     private String opcion1;
     private String opcion2;
@@ -10,6 +13,9 @@ public class Pregunta {
     private String opcionCorrecta;
     private int puntaje;
 
+    /*
+        Constructor que crea un objeto Pregunta con sus atributos necesarios
+     */
     public Pregunta(String pregunta, String opcion1, String opcion2, String opcion3, String opcion4, int puntaje, String opcionCorrecta){
         this.setPregunta(pregunta);
         this.setOpcion1(opcion1);
@@ -20,6 +26,9 @@ public class Pregunta {
         this.setOpcionCorrecta(opcionCorrecta);
     }
 
+    /*
+        Encapsulamiento de los atributos de la clase Pregunta
+     */
 
     public String getPregunta() {
         return pregunta;

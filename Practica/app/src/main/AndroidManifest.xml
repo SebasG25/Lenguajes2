@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity"/>
         <activity android:name=".TableroActivity"/>
-        <activity android:name=".RespuestaActivity"/>
+        <activity android:name=".PuntajeActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

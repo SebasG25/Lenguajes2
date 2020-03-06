@@ -22,6 +22,9 @@ public class Carchivos implements Serializable {
     FileOutputStream fos;
     FileInputStream fis;
 
+    /*
+     Constructor que recibe el contexto y el nombre del archivo que se va a abrir
+     */
     public Carchivos(Context ctx, String archivo) {
         this.ctx = ctx;
         this.Archivo = archivo;
@@ -39,40 +42,9 @@ public class Carchivos implements Serializable {
         }
     }
 
-    public void escribir() throws IOException{
-        try {
-            fos = ctx.openFileOutput(Archivo, Context.MODE_APPEND);
-            fos.write('\n');
-            fos.close();
-        }catch(FileNotFoundException e){
-            Log.e("", e.getMessage());
-        }catch(IOException ex){
-            Log.e("",ex.getMessage());
-        }
-    }
-
-    public String leer() {
-        String lectura = "";
-        try {
-            fis = ctx.openFileInput(Archivo);
-            int i = fis.read();
-            char caracter = 'a';
-            while (i > 0) {
-                if (i != '\n') {
-                    caracter = (char) i;
-                    lectura += caracter;
-                }
-                if (caracter == '.') {
-                    lectura += '\n';
-                }
-                i = fis.read();
-            }
-        } catch (Exception e) {
-            Log.e("", e.getMessage());
-        }
-        return lectura;
-    }
-
+    /*
+        Lee el archivo plano "Cuentas.txt" y después de leerlo retorna una lista que contiene objetos Usuario
+     */
     public ArrayList<Usuario> listaUsuarios() {
         ArrayList<Usuario> lista = new ArrayList<>();
         String lectura = "";
@@ -105,6 +77,44 @@ public class Carchivos implements Serializable {
         return lista;
     }
 
+    /*
+        Lee el archivo plano "Puntajes.txt" y después de leerlo retorna una lista que contiene objetos Puntaje
+     */
+    public ArrayList<Puntaje> listaPuntajes() {
+        ArrayList<Puntaje> lista = new ArrayList<>();
+        String lectura = "";
+        String nombre = "";
+        String puntaje = "";
+        try {
+            int cont = 0;
+            fis = ctx.openFileInput(Archivo);
+            int i = 2;
+            char caracter;
+            while (i > 0) {
+                i = fis.read();
+                caracter = (char) i;
+                lectura += caracter;
+                if (i == '\n') {
+                    if (cont == 0) {
+                        nombre = lectura.trim();
+                    } else if(cont == 1){
+                        puntaje = lectura.trim();
+                        lista.add(new Puntaje(nombre, puntaje));
+                        cont =-1;
+                    }
+                    lectura = "";
+                    cont++;
+                }
+            }
+        } catch (Exception e) {
+            Log.e("", e.getMessage());
+        }
+        return lista;
+    }
+
+    /*
+        Lee el archivo plano "Preguntas.txt" y después de leerlo retorna una lista que contiene objetos Pregunta
+     */
     public ArrayList<Pregunta> listaPreguntas() {
         ArrayList<Pregunta> lista = new ArrayList<>();
         String lectura = "";

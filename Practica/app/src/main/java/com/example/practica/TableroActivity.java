@@ -1,40 +1,49 @@
 package com.example.practica;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class TableroActivity extends AppCompatActivity {
     Random random = new Random();
-    int cantidadPreguntas;
-    int contTurno = 0;
+    Usuario jug1, jug2;
+    int cantidadPreguntas, puntajeActual, contTurno = 0;
     Pregunta preguntaActual;
-    Button actual;
-    String correcta;
-    String respuestaUsuario, resultado;
-    int puntajeActual;
+    String respuestaUsuario, correcta;
+    String[] botones = new String[20];
     ArrayList<Pregunta> preguntas;
     String[] nombresJugadores = new String[2];
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20, btnOpcion1, btnOpcion2, btnOpcion3, btnOpcion4;
-    TextView nombreJugador1, nombreJugador2, tvPregunta;
-    Carchivos archivos = new Carchivos(this, "Preguntas.txt");
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19,
+            btn20, btnOpcion1, btnOpcion2, btnOpcion3, btnOpcion4, actual;
+    TextView nombreJugador1, nombreJugador2, tvPregunta, tvPuntaje1, tvPuntaje2;
+    Carchivos archivos, archivosPuntaje;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tablero);
         conectar();
+        archivosPuntaje = new Carchivos(this, "Puntajes.txt");
+        archivos = new Carchivos(this, "Preguntas.txt");
         Bundle recup = getIntent().getExtras();
         nombresJugadores = recup.getStringArray("Nombres");
         nombreJugador1.setText(nombresJugadores[0]);
         nombreJugador2.setText(nombresJugadores[1]);
+        jug1 = new Usuario(nombresJugadores[0]);
+        jug2 = new Usuario(nombresJugadores[1]);
 
         preguntas = listaPreguntas();
         cantidadPreguntas = preguntas.size();
@@ -57,18 +66,69 @@ public class TableroActivity extends AppCompatActivity {
                 btnOpcion2.setText("Opcion 2");
                 btnOpcion3.setText("Opcion 3");
                 btnOpcion4.setText("Opcion 4");
-                if(respuestaValida()){
-                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
+                /*
+                    Verifico si la respuesta es válida y que jugador la acertó. Si acertó la respuesta, se le da acumula el puntaje, se elimina la pregunta
+                    y se colorea el boton de verde, sino, no se acumula el puntaje, se elimina la pregunta y se colorea el boton de rojo
+                 */
+                /*
+                    Se pasa el turno
+                 */
+                if (respuestaValida()) {
+
+                    if (esTurnoJugador1()) {
+                        jug1.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje1.setText(jug1.getPuntaje() + "");
+
+                    } else if (esTurnoJugador2()) {
+                        jug2.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje2.setText(jug2.getPuntaje() + "");
+
+                    }
+                    contTurno++;
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.verde);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.verde));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                }else{
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
+                } else {
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.rojo);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.rojo));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -86,23 +146,69 @@ public class TableroActivity extends AppCompatActivity {
                 btnOpcion2.setText("Opcion 2");
                 btnOpcion3.setText("Opcion 3");
                 btnOpcion4.setText("Opcion 4");
-                if(respuestaValida()){
+                if (respuestaValida()) {
+
+                    if (esTurnoJugador1()) {
+                        jug1.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje1.setText(jug1.getPuntaje() + "");
+
+                    } else if (esTurnoJugador2()) {
+                        jug2.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje2.setText(jug2.getPuntaje() + "");
+
+                    }
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.verde);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.verde));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
-                }else{
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
+                } else {
+
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.rojo);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.rojo));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         });
 
         btnOpcion3.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 btnOpcion1.setEnabled(false);
@@ -115,23 +221,69 @@ public class TableroActivity extends AppCompatActivity {
                 btnOpcion2.setText("Opcion 2");
                 btnOpcion3.setText("Opcion 3");
                 btnOpcion4.setText("Opcion 4");
-                if(respuestaValida()){
+                if (respuestaValida()) {
+
+                    if (esTurnoJugador1()) {
+                        jug1.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje1.setText(jug1.getPuntaje() + "");
+
+                    } else if (esTurnoJugador2()) {
+                        jug2.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje2.setText(jug2.getPuntaje() + "");
+
+                    }
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.verde);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.rojo));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
-                }else{
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
+                } else {
+
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.rojo);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.verde));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         });
 
         btnOpcion4.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 btnOpcion1.setEnabled(false);
@@ -144,18 +296,63 @@ public class TableroActivity extends AppCompatActivity {
                 btnOpcion2.setText("Opcion 2");
                 btnOpcion3.setText("Opcion 3");
                 btnOpcion4.setText("Opcion 4");
-                if(respuestaValida()){
+                if (respuestaValida()) {
+
+                    if (esTurnoJugador1()) {
+                        jug1.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje1.setText(jug1.getPuntaje() + "");
+
+                    } else if (esTurnoJugador2()) {
+                        jug2.setPuntaje(preguntaActual.getPuntaje());
+                        tvPuntaje2.setText(jug2.getPuntaje() + "");
+
+                    }
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.verde);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.verde));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_LONG).show();
-                }else{
+                    Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
+                } else {
+
+                    contTurno++;
                     actual.setEnabled(false);
-                    actual.setBackgroundColor(R.drawable.rojo);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        actual.setBackground(getDrawable(R.drawable.rojo));
+                    }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
-                    cantidadPreguntas--;
-                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
+                    if (revisarVictoria()) {
+                        if(getJugadorGanador() == null){
+                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            String nombre = getJugadorGanador().getNombre();
+                            String puntaje = getJugadorGanador().getPuntaje() + "";
+                            String texto = nombre + "\n" + puntaje + "\n";
+                            try {
+                                archivosPuntaje.escribir(texto);
+                            } catch (IOException e) {
+                                Log.e("", e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -301,7 +498,10 @@ public class TableroActivity extends AppCompatActivity {
         });
     }
 
-    private void boton1(){
+    /*
+        Se obtienen los atributos de la clase pregunta (La pregunta, las 4 respuestas, el puntaje y la opción correcta)
+     */
+    private void boton1() {
         actual = btn1;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -317,7 +517,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton2(){
+    private void boton2() {
         actual = btn2;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -333,7 +533,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton3(){
+    private void boton3() {
         actual = btn3;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -349,7 +549,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton4(){
+    private void boton4() {
         actual = btn4;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -365,7 +565,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton5(){
+    private void boton5() {
         actual = btn5;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -381,7 +581,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton6(){
+    private void boton6() {
         actual = btn6;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -397,7 +597,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton7(){
+    private void boton7() {
         actual = btn7;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -413,7 +613,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton8(){
+    private void boton8() {
         actual = btn8;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -429,7 +629,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton9(){
+    private void boton9() {
         actual = btn9;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -445,7 +645,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton10(){
+    private void boton10() {
         actual = btn10;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -461,7 +661,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton11(){
+    private void boton11() {
         actual = btn11;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -477,7 +677,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton12(){
+    private void boton12() {
         actual = btn12;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -493,7 +693,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton13(){
+    private void boton13() {
         actual = btn13;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -509,7 +709,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton14(){
+    private void boton14() {
         actual = btn14;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -525,7 +725,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton15(){
+    private void boton15() {
         actual = btn15;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -541,7 +741,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton16(){
+    private void boton16() {
         actual = btn16;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -557,7 +757,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton17(){
+    private void boton17() {
         actual = btn17;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -573,7 +773,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton18(){
+    private void boton18() {
         actual = btn18;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -589,7 +789,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton19(){
+    private void boton19() {
         actual = btn19;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -605,7 +805,7 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private void boton20(){
+    private void boton20() {
         actual = btn20;
         preguntaActual = sortearPregunta();
         puntajeActual = preguntaActual.getPuntaje();
@@ -621,11 +821,15 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion4.setText(preguntaActual.getOpcion4());
     }
 
-    private boolean esTurnoJugador1(){
+    /*
+        Se verifica de quien es el turno
+     */
+
+    private boolean esTurnoJugador1() {
         return contTurno % 2 == 0;
     }
 
-    private boolean esTurnoJugador2(){
+    private boolean esTurnoJugador2() {
         return contTurno % 2 == 1;
     }
 
@@ -657,30 +861,124 @@ public class TableroActivity extends AppCompatActivity {
         btnOpcion3 = findViewById(R.id.btnOpcion3);
         btnOpcion4 = findViewById(R.id.btnOpcion4);
         tvPregunta = findViewById(R.id.tvPregunta);
+        tvPuntaje1 = findViewById(R.id.tvPuntaje1);
+        tvPuntaje2 = findViewById(R.id.tvPuntaje2);
     }
 
-    private ArrayList<Pregunta> listaPreguntas(){
+    /*
+        Método que verifica si ya se acabó el juego, retorna verdadero si la lista está vacía, entonces el juego ya habrá terminado
+     */
+
+    private ArrayList<Pregunta> listaPreguntas() {
         return archivos.listaPreguntas();
     }
 
-
-    private Pregunta sortearPregunta(){
-        int posicion = random.nextInt();
-        Pregunta pregunta = preguntas.get(posicion);
-        return pregunta;
-    }
-
-    private boolean respuestaValida(){
-        if(preguntaActual.getOpcionCorrecta().equals(respuestaUsuario)){
+    private boolean revisarVictoria() {
+        if (preguntas.isEmpty()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private Pregunta getPosicionPregunta(ArrayList<Pregunta> preguntas, Pregunta pregunta){
-        for(int i = 0; i < preguntas.size(); i++){
-            if(preguntas.get(i) == pregunta){
+    /*
+        Retorna el jugador con mayor puntaje, retorna null si hubo un empate
+     */
+
+    private Usuario getJugadorGanador(){
+        if(jug1.getPuntaje() > jug2.getPuntaje()){
+            return jug1;
+        }else if(jug2.getPuntaje() > jug1.getPuntaje()){
+            return jug2;
+        }else{
+            return null;
+        }
+    }
+
+    /*
+        Método que retorna una pregunta aleatoria
+     */
+    private Pregunta sortearPregunta() {
+
+        int posicion = random.nextInt(preguntas.size());
+        Pregunta pregunta = preguntas.get(posicion);
+        return pregunta;
+    }
+
+    /*
+        Se verifica si la respuesta escogida por el jugador es la opción correcta de la pregunta
+     */
+    private boolean respuestaValida() {
+        if (preguntaActual.getOpcionCorrecta().equals(respuestaUsuario)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /*
+        Intento de bonificaciones
+     */
+    private boolean bonusDiagonales() {
+        if (botones[1] == "correcta" && botones[6] == "correcta" && botones[11] == "correcta" && botones[16] == "correcta") {
+            return true;
+        } else if (botones[5] == "correcta" && botones[10] == "correcta" && botones[15] == "correcta" && botones[20] == "correcta") {
+            return true;
+        } else if (botones[4] == "correcta" && botones[7] == "correcta" && botones[10] == "correcta" && botones[13] == "correcta") {
+            return true;
+        } else if (botones[8] == "correcta" && botones[11] == "correcta" && botones[14] == "correcta" && botones[17] == "correcta") {
+            return true;
+        }
+        return false;
+
+    }
+
+    private boolean bonusHorizontales() {
+        if (botones[1] == "correcta" && botones[2] == "correcta" && botones[3] == "correcta" && botones[4] == "correcta") {
+            return true;
+        } else if (botones[5] == "correcta" && botones[6] == "correcta" && botones[7] == "correcta" && botones[8] == "correcta") {
+            return true;
+        } else if (botones[9] == "correcta" && botones[10] == "correcta" && botones[11] == "correcta" && botones[12] == "correcta") {
+            return true;
+        } else if (botones[13] == "correcta" && botones[14] == "correcta" && botones[15] == "correcta" && botones[16] == "correcta") {
+            return true;
+        } else if (botones[17] == "correcta" && botones[18] == "correcta" && botones[19] == "correcta" && botones[20] == "correcta") {
+
+        }
+        return false;
+
+    }
+
+    private boolean bonusVerticales() {
+        if (botones[1] == "correcta" && botones[5] == "correcta" && botones[9] == "correcta" && botones[13] == "correcta" && botones[17] == "correcta") {
+            return true;
+        } else if (botones[2] == "correcta" && botones[6] == "correcta" && botones[10] == "correcta" && botones[14] == "correcta" && botones[18] == "correcta") {
+            return true;
+        } else if (botones[3] == "correcta" && botones[7] == "correcta" && botones[11] == "correcta" && botones[15] == "correcta" && botones[19] == "correcta") {
+            return true;
+        } else if (botones[4] == "correcta" && botones[8] == "correcta" && botones[12] == "correcta" && botones[16] == "correcta" && botones[20] == "correcta") {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean bonusCuadroExterior() {
+        if (botones[1] == "correcta" && botones[5] == "correcta" && botones[9] == "correcta" && botones[13] == "correcta" && botones[17] == "correcta"
+                && botones[18] == "correcta" && botones[19] == "correcta" && botones[20] == "correcta" && botones[16] == "correcta" && botones[12] == "correcta"
+                && botones[8] == "correcta" && botones[4] == "correcta" && botones[3] == "correcta" && botones[2] == "correcta") {
+
+            return true;
+        }
+        return false;
+    }
+
+    /*
+        Retorna el objeto pregunta cuando encuentre la pregunta que es igual a la que se pasa como parámetro, si no se encuentra retorna null
+     */
+    private Pregunta getPosicionPregunta(ArrayList<Pregunta> preguntas, Pregunta pregunta) {
+        for (int i = 0; i < preguntas.size(); i++) {
+            if (preguntas.get(i) == pregunta) {
                 return preguntas.get(i);
             }
         }

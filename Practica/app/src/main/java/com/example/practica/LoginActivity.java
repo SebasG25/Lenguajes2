@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
+
     int contJugadores = 0;
     private String nombreJugador1;
     private String nombreJugador2;
@@ -27,6 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         conectar();
         contJugadores = 1;
         archivo = new Carchivos(this, "Cuentas.txt");
+        /*
+            Al presionar el botón "Login" se verifica si los edit texts están vacíos. Si no están vacíos se verifica que el usuario con la contraseña
+            ingresada si exista para contarlo como un jugador logueado, cuando el contJugadores llegue a un numero par es porque se han registrado dos jugadores
+            y se pasará al tablero. Se guardan los nombres para pasarlos con un Bundle al tablero
+         */
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +70,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        /*
+            Se registra un usuario si el nombre ingresado ya no existe. También verifica si los campos están vacíos
+         */
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +102,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /*
+        Recorre toda la lista que retorna Carchivos después de leer el archivo plano, si encuentra el usuario retorna verdadero, y sino, retorna falso
+     */
     private boolean encontroUsuario(String correo){
         for(int i = 0; i < archivo.listaUsuarios().size(); i++){
             if(archivo.listaUsuarios().get(i).getNombre().equals(correo.trim())){
@@ -102,6 +114,9 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+    /*
+        Verifica si el jugador con el usuario ingresado existe, y si la contraseña ingresada es de ese usuario respectivo
+     */
     private boolean encontroUsuarioYContraseña(String correo, String contraseña){
         for(int i = 0; i < archivo.listaUsuarios().size(); i++){
             if(archivo.listaUsuarios().get(i).getNombre().equals(correo.trim())){
@@ -122,6 +137,9 @@ public class LoginActivity extends AppCompatActivity {
         btnRegistro = findViewById(R.id.btnRegistro);
     }
 
+    /*
+        Asigna el nombre al jugador 1 y al jugador 2 según la cuenta ingresada
+     */
     public void setNombreJugador1(String nombreJugador1) {
         this.nombreJugador1 = nombreJugador1;
     }
