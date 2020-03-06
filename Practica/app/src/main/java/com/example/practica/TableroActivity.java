@@ -93,7 +93,10 @@ public class TableroActivity extends AppCompatActivity {
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -104,6 +107,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 } else {
@@ -116,7 +122,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -127,6 +136,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 }
@@ -166,7 +178,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -177,6 +192,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 } else {
@@ -190,7 +208,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -201,6 +222,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 }
@@ -241,7 +265,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -252,6 +279,10 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
+
                         }
                     }
                 } else {
@@ -265,7 +296,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -276,6 +310,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 }
@@ -316,7 +353,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -327,6 +367,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 } else {
@@ -340,7 +383,10 @@ public class TableroActivity extends AppCompatActivity {
                     Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
                     if (revisarVictoria()) {
                         if(getJugadorGanador() == null){
-                            Toast.makeText(TableroActivity.this, "EMPATE" + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TableroActivity.this, "EMPATE", Toast.LENGTH_SHORT).show();
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }else{
                             Toast.makeText(TableroActivity.this, "GANA " + getJugadorGanador().getNombre(), Toast.LENGTH_SHORT).show();
                             String nombre = getJugadorGanador().getNombre();
@@ -351,6 +397,9 @@ public class TableroActivity extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.e("", e.getMessage());
                             }
+                            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(main);
+                            finish();
                         }
                     }
                 }

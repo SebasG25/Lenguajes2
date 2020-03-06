@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <LinearLayout
@@ -15,16 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TOP JUGADORES"
+            android:textColor="#FFFFFF"
             android:gravity="center"
             android:textSize="45dp"
 
             ></TextView>
 
         <ListView
-            android:background="@drawable/boton"
             android:id="@+id/topJugadores"
             android:layout_width="match_parent"
-            android:layout_height="600dp"></ListView>
+            android:layout_height="1147dp"
+
+            android:background="@drawable/boton"></ListView>
 
     </LinearLayout>
 
