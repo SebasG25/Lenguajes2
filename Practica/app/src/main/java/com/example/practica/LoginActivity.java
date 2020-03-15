@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /*
-        Recorre toda la lista que retorna Carchivos después de leer el archivo plano, si encuentra el usuario retorna verdadero, y sino, retorna falso
+        Recorre toda la lista que retorna Carchivos después sde leer el archivo plano, si encuentra el usuario retorna verdadero, y sino, retorna falso
      */
     private boolean encontroUsuario(String correo){
         for(int i = 0; i < archivo.listaUsuarios().size(); i++){
