@@ -259,7 +259,7 @@ public class TableroActivity extends AppCompatActivity {
                     contTurno++;
                     actual.setEnabled(false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        actual.setBackground(getDrawable(R.drawable.rojo));
+                        actual.setBackground(getDrawable(R.drawable.verde));
                     }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
                     Toast.makeText(TableroActivity.this, "RESPUESTA CORRECTA", Toast.LENGTH_SHORT).show();
@@ -290,7 +290,7 @@ public class TableroActivity extends AppCompatActivity {
                     contTurno++;
                     actual.setEnabled(false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        actual.setBackground(getDrawable(R.drawable.verde));
+                        actual.setBackground(getDrawable(R.drawable.rojo));
                     }
                     preguntas.remove(getPosicionPregunta(preguntas, preguntaActual));
                     Toast.makeText(TableroActivity.this, "RESPUESTA INCORRECTA", Toast.LENGTH_SHORT).show();
