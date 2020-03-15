@@ -56,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/shape_text"
-        android:layout_above="@id/btnLo"
+        android:layout_above="@id/btnLogin"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/btnLo"
+        android:layout_below="@id/btnLogin"
         android:layout_centerHorizontal="true">
 
         <EditText
@@ -77,7 +77,7 @@
             android:textColor="#FFF"
             android:gravity="end"
             android:text="¿Aún no tienes cuenta?"
-            android:layout_below="@id/btnLo"
+            android:layout_below="@id/btnLogin"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="10dp"
@@ -86,10 +86,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/txtCrearCuenta"
+            android:layout_toRightOf="@+id/btnCrearCuenta"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_below="@id/btnLo"
+            android:layout_below="@id/btnLogin"
             android:text="Crear cuenta"
             android:background="@android:color/transparent"></Button>
     </LinearLayout>
@@ -97,7 +97,7 @@
 
 
     <Button
-        android:id="@+id/btnLo"
+        android:id="@+id/btnLogin"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/login_btn_design"
