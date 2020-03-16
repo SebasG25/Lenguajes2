@@ -35,11 +35,13 @@ public class Archivos {
         }
     }
 
-    public ArrayList<Usuario> listaUsuarios() {
-        ArrayList<Usuario> lista = new ArrayList<>();
+    public ArrayList<Estudiante> listaUsuarios() {
+        ArrayList<Estudiante> lista = new ArrayList<>();
         String lectura = "";
-        String cedula = "";
-        String contraseña = "";
+        String name = "";
+        String lastname = "";
+        String id = "";
+        String pass = "";
         try {
             int cont = 0;
             fis = ctx.openFileInput(Archivo);
@@ -50,11 +52,17 @@ public class Archivos {
                 caracter = (char) i;
                 lectura += caracter;
                 if (i == '\n') {
-                    if (cont == 0) {
-                        cedula = lectura.trim();
-                    } else if(cont == 1){
-                        contraseña = lectura.trim();
-                        lista.add(new Usuario(cedula, contraseña));
+                    if(cont == 0){
+                        name = lectura.trim();
+                    }else if(cont == 1){
+                        lastname = lectura.trim();
+                    }
+                    else if (cont == 2)
+                    {
+                        id = lectura.trim();
+                    } else if(cont == 3){
+                        pass = lectura.trim();
+                        lista.add(new Estudiante(name, lastname, id, pass));
                         cont =-1;
                     }
                     lectura = "";
