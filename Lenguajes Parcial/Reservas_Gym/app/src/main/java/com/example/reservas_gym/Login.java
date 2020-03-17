@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.jackandphantom.blurimage.BlurImage;
 
 import java.util.ArrayList;
 
@@ -26,8 +26,10 @@ public class Login extends AppCompatActivity {
     ArrayList<Estudiante> listaUsuarios = new ArrayList<>();
     Archivos archivos;
     EditText txtId, txtPass;
+    ImageButton admin;
     static final String account = "123";
     static final String password = "gymudem";
+
 
 
     @Override
@@ -37,9 +39,21 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
         setVideo();
-        initializeList();
         launchSignUp();
         verifyUser();
+        initializeList();
+        admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchAdminPanel();
+            }
+        });
+    }
+
+    public void launchAdminPanel()
+    {
+        Intent intent = Admin_Activity.launcheME(Login.this);
+        startActivity(intent);
     }
 
     public void connect()
@@ -49,6 +63,7 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         txtId = findViewById(R.id.txtCedula);
         txtPass = findViewById(R.id.txtContraseña);
+        admin = findViewById(R.id.imgAdmin);
     }
     public void setVideo()
     {
@@ -85,13 +100,8 @@ public class Login extends AppCompatActivity {
 
     }
 
-    public void launchAdmin(){
-        Intent intent = AdminActivity.launcheME(Login.this);
-        startActivity(intent);
-    }
-
     private void launchReserva(){
-        Intent intent = ReservaActivity.launcheME(Login.this);
+        Intent intent = Reservas.launcheME(Login.this);
         startActivity(intent);
     }
 
@@ -109,7 +119,7 @@ public class Login extends AppCompatActivity {
                     txtId.setText("");
                     txtPass.setText("");
                     Toast.makeText(Login.this, "Bienvenido administrador", Toast.LENGTH_SHORT).show();
-                    launchAdmin();
+                    launchAdminPanel();
                 }else{
                     if(encontroUsuarioYContraseña(id, pass)){
                         txtId.setText("");
