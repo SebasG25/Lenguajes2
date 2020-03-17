@@ -26,6 +26,8 @@ public class Login extends AppCompatActivity {
     ArrayList<Estudiante> listaUsuarios = new ArrayList<>();
     Archivos archivos;
     EditText txtId, txtPass;
+    static final String account = "123";
+    static final String password = "gymudem";
 
 
     @Override
@@ -35,11 +37,9 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
         setVideo();
+        initializeList();
         launchSignUp();
         verifyUser();
-        archivos = new Archivos(getApplicationContext(), "accounts.txt");
-        listaUsuarios = getListaUsuarios();
-
     }
 
     public void connect()
@@ -85,6 +85,11 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public void launchAdmin(){
+        Intent intent = AdminActivity.launcheME(Login.this);
+        startActivity(intent);
+    }
+
     private void launchReserva(){
         Intent intent = ReservaActivity.launcheME(Login.this);
         startActivity(intent);
@@ -96,10 +101,15 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 String id = txtId.getText().toString().trim();
                 String pass = txtPass.getText().toString().trim();
-                if(id.isEmpty() || pass.isEmpty()){
+                if(id.isEmpty() || pass.isEmpty()) {
                     txtId.setText("");
                     txtPass.setText("");
                     Toast.makeText(Login.this, "Debe llenar todos los espacios obligatoriamente", Toast.LENGTH_SHORT).show();
+                }else if(account.equals(id) && password.equals(pass)){
+                    txtId.setText("");
+                    txtPass.setText("");
+                    Toast.makeText(Login.this, "Bienvenido administrador", Toast.LENGTH_SHORT).show();
+                    launchAdmin();
                 }else{
                     if(encontroUsuarioYContraseña(id, pass)){
                         txtId.setText("");
@@ -149,6 +159,11 @@ public class Login extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void initializeList(){
+        archivos = new Archivos(getApplicationContext(), "accounts.txt");
+        listaUsuarios = getListaUsuarios();
     }
 
     private ArrayList<Estudiante> getListaUsuarios(){

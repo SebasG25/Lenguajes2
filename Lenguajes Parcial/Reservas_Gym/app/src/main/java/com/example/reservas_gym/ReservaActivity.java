@@ -21,12 +21,14 @@ public class ReservaActivity extends AppCompatActivity {
     Button btnShowDate;
     TextView txtDate;
     String date;
+    Archivos archivos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
+        initializeList();
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -43,6 +45,10 @@ public class ReservaActivity extends AppCompatActivity {
         calendar = findViewById(R.id.calendar);
         btnShowDate = findViewById(R.id.btn_ShowDate);
         txtDate = findViewById(R.id.txtDate);
+    }
+
+    private void initializeList(){
+        archivos = new Archivos(getApplicationContext(), "reserves.txt");
     }
     public static  Intent launcheME(Context ctx)
     {

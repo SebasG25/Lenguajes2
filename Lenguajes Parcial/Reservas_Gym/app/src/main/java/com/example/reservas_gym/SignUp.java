@@ -37,8 +37,7 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
-        archivos = new Archivos(getApplicationContext(), "accounts.txt");
-        users = getListaUsuarios();
+        initializeList();
         setVideo();
         signUp();
 
@@ -146,6 +145,11 @@ public class SignUp extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         player.release();
+    }
+
+    private void initializeList(){
+        archivos = new Archivos(getApplicationContext(), "accounts.txt");
+        users = getListaUsuarios();
     }
 
     private ArrayList<Estudiante> getListaUsuarios(){
