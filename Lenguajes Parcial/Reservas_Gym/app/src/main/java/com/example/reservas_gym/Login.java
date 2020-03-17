@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     int playerVidPos;
     Button btnSignUp, btnLogin;
     ArrayList<Estudiante> listaUsuarios = new ArrayList<>();
+    String[] userData = new String[3];
     Archivos archivos;
     EditText txtId, txtPass;
     ImageButton admin;
@@ -100,8 +101,9 @@ public class Login extends AppCompatActivity {
 
     }
 
-    private void launchReserva(){
+    private void launchReserva(String[] user){
         Intent intent = Reservas.launcheME(Login.this);
+        intent.putExtra("userData", user);
         startActivity(intent);
     }
 
@@ -111,6 +113,9 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 String id = txtId.getText().toString().trim();
                 String pass = txtPass.getText().toString().trim();
+                String name = nameSearchedById(id);
+                String lastname = lastnameSearchedById(id);
+
                 if(id.isEmpty() || pass.isEmpty()) {
                     txtId.setText("");
                     txtPass.setText("");
@@ -125,7 +130,10 @@ public class Login extends AppCompatActivity {
                         txtId.setText("");
                         txtPass.setText("");
                         Toast.makeText(Login.this, "Logueado exitosamente", Toast.LENGTH_SHORT).show();
-                        launchReserva();
+                        userData[0] = id;
+                        userData[1] = name;
+                        userData[2] = lastname;
+                        launchReserva(userData);
                     }else{
                         txtId.setText("");
                         txtPass.setText("");
@@ -169,6 +177,24 @@ public class Login extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private String nameSearchedById(String id){
+        for(int i = 0; i < listaUsuarios.size(); i++){
+            if(listaUsuarios.get(i).getId().equals(id.trim())){
+                return listaUsuarios.get(i).getNombre();
+            }
+        }
+        return "";
+    }
+
+    private String lastnameSearchedById(String id){
+        for(int i = 0; i < listaUsuarios.size(); i++){
+            if(listaUsuarios.get(i).getId().equals(id.trim())){
+                return listaUsuarios.get(i).getApellido();
+            }
+        }
+        return "";
     }
 
     private void initializeList(){

@@ -30,14 +30,17 @@ public class Archivos {
             fos.close();
         } catch (FileNotFoundException e) {
             Log.e("", e.getMessage());
-        } catch (IOException ex) {
-            Log.e("", ex.getMessage());
+        } catch (Exception e) {
+            Log.e("", e.getMessage());
         }
     }
 
     public ArrayList<Reserva> listaReservas(){
         ArrayList<Reserva> lista = new ArrayList<>();
         String lectura = "";
+        String day = "";
+        String month = "";
+        String year = "";
         String name = "";
         String lastname = "";
         String id = "";
@@ -53,15 +56,20 @@ public class Archivos {
                 lectura += caracter;
                 if (i == '\n') {
                     if(cont == 0){
-                        name = lectura.trim();
+                        date = lectura.trim() + "/";
                     }else if(cont == 1){
-                        lastname = lectura.trim();
-                    }
-                    else if (cont == 2)
-                    {
-                        id = lectura.trim();
-                    } else if(cont == 3){
+                        date = lectura.trim() + "/";
+                    }else if(cont == 2){
                         date = lectura.trim();
+                    }
+                    if(cont == 3){
+                        id = lectura.trim();
+                    }else if(cont == 4){
+                        name = lectura.trim();
+                    }
+                    else if (cont == 5)
+                    {
+                        lastname = lectura.trim();
                         lista.add(new Reserva(name, lastname, id, date));
                         cont =-1;
                     }

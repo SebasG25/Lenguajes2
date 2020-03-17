@@ -17,6 +17,7 @@
         android:textSize="25dp"
         android:text="Seleccione una fecha"
         android:textColor="#059EE8"></TextView>
+
     <CalendarView
         android:id="@+id/calendar"
         android:layout_width="250dp"

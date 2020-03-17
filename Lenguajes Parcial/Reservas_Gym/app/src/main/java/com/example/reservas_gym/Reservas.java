@@ -27,6 +27,8 @@ TextView txtTip;
 FadingTextView txtTipView;
 TextView txtName;
 TextView reservatxt;
+String[] userData = new String[3];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,8 @@ TextView reservatxt;
         connect();
         animations();
         launchSignUp();
+        Bundle recup = getIntent().getExtras();
+        userData = recup.getStringArray("userData");
     }
 
     private void connect()
@@ -74,6 +78,7 @@ TextView reservatxt;
             @Override
             public void onClick(View v) {
                 Intent intent = ReservaActivity.launcheME(Reservas.this);
+                intent.putExtra("userData", userData);
                 startActivity(intent);
             }
         });
