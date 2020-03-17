@@ -27,7 +27,6 @@ public class Login extends AppCompatActivity {
     String[] userData = new String[3];
     Archivos archivos;
     EditText txtId, txtPass;
-    ImageButton admin;
     static final String account = "123";
     static final String password = "gymudem";
 
@@ -43,12 +42,6 @@ public class Login extends AppCompatActivity {
         launchSignUp();
         verifyUser();
         initializeList();
-        admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchAdminPanel();
-            }
-        });
     }
 
     public void launchAdminPanel()
@@ -64,7 +57,6 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         txtId = findViewById(R.id.txtCedula);
         txtPass = findViewById(R.id.txtContraseña);
-        admin = findViewById(R.id.imgAdmin);
     }
     public void setVideo()
     {
@@ -126,7 +118,7 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Bienvenido administrador", Toast.LENGTH_SHORT).show();
                     launchAdminPanel();
                 }else{
-                    if(encontroUsuarioYContraseña(id, pass)){
+                    if(foundUserAndPassword(id, pass)){
                         txtId.setText("");
                         txtPass.setText("");
                         Toast.makeText(Login.this, "Logueado exitosamente", Toast.LENGTH_SHORT).show();
@@ -166,7 +158,7 @@ public class Login extends AppCompatActivity {
         player.release();
     }
 
-    private boolean encontroUsuarioYContraseña(String id, String pass){
+    private boolean foundUserAndPassword(String id, String pass){
         for(int i = 0; i < listaUsuarios.size(); i++){
             if(listaUsuarios.get(i).getId().equals(id.trim())){
                 if(listaUsuarios.get(i).getPass().equals(pass.trim())){
