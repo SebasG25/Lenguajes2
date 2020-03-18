@@ -86,9 +86,4 @@ String[] userData = new String[3];
         });
 
     }
-    private void darConsejo()
-    {
-
-    }
-
 }
