@@ -61,10 +61,10 @@ public class Admin_Activity extends AppCompatActivity {
     }
     private String getReservas(ArrayList<Reserva> list)
     {
-        int cont = 0;
         String info= "";
         for(Reserva e:list)
         {
+            int cont = 0;
             info += e.getReservationInfo();
             cont++;
             if(cont == 1){

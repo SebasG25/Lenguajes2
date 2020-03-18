@@ -104,8 +104,8 @@ public class SignUp extends AppCompatActivity {
                     txtId.setText("");
                     txtPass.setText("");
 
-                    String text = name + "\n" + lastname + "\n" + id + "\n" + pass + "\n";
 
+                    String text = name + "\n" + lastname + "\n" + id + "\n" + pass + "\n";
                     try {
                         archivos.escribir(text);
                         Toast.makeText(getApplicationContext(), "Registro exitoso", Toast.LENGTH_LONG).show();
