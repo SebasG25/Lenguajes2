@@ -103,6 +103,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                initializeList();
                 String id = txtId.getText().toString().trim();
                 String pass = txtPass.getText().toString().trim();
                 String name = nameSearchedById(id);

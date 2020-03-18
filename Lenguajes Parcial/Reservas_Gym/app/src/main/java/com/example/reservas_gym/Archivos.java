@@ -97,7 +97,7 @@ public class Archivos {
             char caracter;
             while (i > 0) {
                 i = fis.read();
-                caracter = (char) i;
+                 caracter = (char) i;
                 lectura += caracter;
                 if (i == '\n') {
                     if(cont == 0){
