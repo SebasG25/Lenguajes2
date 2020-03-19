@@ -47,6 +47,10 @@ public class ReservaActivity extends AppCompatActivity {
         userData = recup.getStringArray("userData");
         archivos = new Archivos(getApplicationContext(), "reserves.txt");
 
+
+        /*
+        En un textview pone la fecha que el usuario le dio tap
+         */
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
@@ -63,6 +67,9 @@ public class ReservaActivity extends AppCompatActivity {
                 rb6.setEnabled(true);
             }
         });
+        /*
+        Detecta el radio button checkeado y en un textview pone la hora que el usuario eligió
+         */
         rgTimes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -75,6 +82,9 @@ public class ReservaActivity extends AppCompatActivity {
         doReserve();
     }
 
+    /*
+    Acción del botón RESERVAR
+     */
     private void doReserve(){
         btnReserve.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +94,9 @@ public class ReservaActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    Verifica que la fecha que eligió el usuario sea la correcta (Un día después del día actual)
+     */
     private void verifyDate(){
         String text = "";
         String datePicked = txtDate.getText().toString().trim();
@@ -109,6 +122,9 @@ public class ReservaActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Intent que lanza el menú login
+     */
     private void launchLogin(){
         Intent intent = Login.launcheME(ReservaActivity.this);
         startActivity(intent);
@@ -134,6 +150,10 @@ public class ReservaActivity extends AppCompatActivity {
         rb5.setEnabled(false);
         rb6.setEnabled(false);
     }
+
+    /*
+    Intent que lanza este activity
+     */
     public static  Intent launcheME(Context ctx)
     {
         return new Intent(ctx, ReservaActivity.class);

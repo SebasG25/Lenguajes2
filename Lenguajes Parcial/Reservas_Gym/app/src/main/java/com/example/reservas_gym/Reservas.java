@@ -54,6 +54,10 @@ String[] userData = new String[3];
         reservatxt = findViewById(R.id.txt_reserva);
         txtName.setText(userData[1] + " " + userData[2]);
     }
+
+    /*
+    Método que anima las transiciones de la pantalla tips
+     */
     private void animations()
     {
         tipsPanel.setOnClickListener(new View.OnClickListener() {
@@ -70,10 +74,18 @@ String[] userData = new String[3];
             }
         });
     }
+
+    /*
+    Intent que lanza este activity
+     */
     public static Intent launcheME(Context ctx)
     {
         return new Intent(ctx, Reservas.class);
     }
+
+    /*
+    Intent que lanza el menú de reservas y se le pasa los datos del usuario al otro activity
+     */
     public void launchSignUp()
     {
         imgAgenda.setOnClickListener(new View.OnClickListener() {
