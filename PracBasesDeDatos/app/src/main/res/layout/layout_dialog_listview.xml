@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fondo">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <ListView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lvHabitaciones"
+            android:dividerHeight="3dp"
+            android:divider="@android:color/white"
+            ></ListView>
+
+    </ScrollView>
+
+
+    <EditText
+        android:paddingLeft="30dp"
+        android:inputType="text"
+        android:id="@+id/txtId"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Ingrese Id"
+        android:textSize="20dp"
+        android:background="@drawable/text_diseno"></EditText>
+</LinearLayout>

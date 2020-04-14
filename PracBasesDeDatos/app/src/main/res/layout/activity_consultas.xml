@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="50dp"
+    android:background="@drawable/fondo">
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/casa2"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/imgHome"></ImageButton>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="CRUD"
+        android:id="@+id/btnCrud"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 1"
+        android:id="@+id/btnPunto1"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 2"
+        android:id="@+id/btnPunto2"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 3"
+        android:id="@+id/btnPunto3"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 4"
+        android:id="@+id/btnPunto4"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 5"
+        android:id="@+id/btnPunto5"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 6"
+        android:id="@+id/btnPunto6"
+        android:background="@drawable/btn_diseno"></Button>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Punto 7"
+        android:id="@+id/btnPunto7"
+        android:background="@drawable/btn_diseno"></Button>
+</LinearLayout>

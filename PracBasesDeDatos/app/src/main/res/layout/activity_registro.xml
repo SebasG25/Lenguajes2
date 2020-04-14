@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/fondo">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/casa2"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"></ImageView>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Tipo (casa, apto, finca)"
+        android:inputType="text"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/txtTipo"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"
+        ></EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Precio de arrendamiento"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/txtPrecio"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"
+        ></EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Dirección"
+        android:layout_marginBottom="10dp"
+        android:singleLine="true"
+        android:id="@+id/txtDireccion"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"></EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Nombre del Propietario"
+        android:inputType="text"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/txtNombreProp"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"></EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Teléfono del propietario"
+        android:inputType="number"
+        android:layout_marginBottom="10dp"
+        android:maxLength="10"
+        android:id="@+id/txtTelefonoProp"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"></EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="Fecha de recepción (DD/MM/AAAA)"
+        android:inputType="date"
+        android:layout_marginBottom="10dp"
+        android:maxLength="10"
+        android:id="@+id/txtFechaRecep"
+        android:background="@drawable/text_diseno"
+        android:paddingLeft="20dp"></EditText>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arrendada:"
+            android:textSize="20dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/tvArrendada"
+            ></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:id="@+id/tvRespuestaArriendo"
+            android:layout_toRightOf="@id/tvArrendada"
+            android:text="NO"
+            android:paddingLeft="10dp"></TextView>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/tvArrendada"
+            android:id="@+id/swchArrendada"></Switch>
+
+
+
+        <Button
+            android:layout_marginTop="30dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="REGISTRAR"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnRegistrar"
+            android:layout_below="@id/tvArrendada"
+            android:background="@drawable/btn_diseno"
+            ></Button>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/return_arrow"
+            android:layout_below="@id/tvArrendada"
+            android:gravity="center"
+            android:layout_marginTop="32dp"
+            android:id="@+id/return_arrow"
+            ></Button>
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>
