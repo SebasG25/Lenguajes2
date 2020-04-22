@@ -292,7 +292,7 @@ public class ConsultasActivity extends AppCompatActivity {
         cvFechaEsp.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                txtFechaEsp.setText(dayOfMonth + "/" + "0"+(month + 1) + "/" + year);
+                txtFechaEsp.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
             }
         });
 
