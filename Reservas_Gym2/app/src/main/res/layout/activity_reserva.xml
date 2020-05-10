@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#030929"
+    android:layout_height="match_parent"
+    tools:context=".ReservaActivity">
+
+    <TextView
+        android:id="@+id/P1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="120dp"
+        android:alpha="0"
+        android:fontFamily="@font/aladin"
+        android:text="You"
+        android:textSize="50dp"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/P2"
+        android:alpha="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="165dp"
+        android:fontFamily="@font/acme"
+        android:text="are"
+        android:textSize="45dp"></TextView>
+
+    <TextView
+        android:id="@+id/P3"
+        android:alpha="0"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="212dp"
+        android:text="Stronger"
+        android:fontFamily="@font/aladin"
+        android:textStyle="italic"
+        android:textSize="55dp"></TextView>
+
+    <TextView
+        android:id="@+id/P4"
+        android:alpha="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="270dp"
+        android:fontFamily="@font/acme"
+        android:text="than you"
+        android:textSize="40dp"></TextView>
+
+    <TextView
+        android:id="@+id/P5"
+        android:alpha="0"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="320dp"
+        android:text="Think"
+        android:fontFamily="@font/aladin"
+        android:textStyle="bold"
+        android:textSize="50dp"></TextView>
+
+    <ImageView
+        android:id="@+id/optionsPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/gym_student_panel_moreblurred"
+        android:layout_marginTop="480dp"></ImageView>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignTop="@id/optionsPanel">
+
+        <ImageView
+            android:id="@+id/imgUserLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/student_user_icon"></ImageView>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNombreEstudiante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre Estudiante"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:fontFamily="@font/acme"></TextView>
+
+            <TextView
+                android:id="@+id/tvCarreraEstudiante"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Carrera"
+                android:fontFamily="@font/acme"
+                android:textSize="25dp"></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/btnReservar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignTop="@+id/optionsPanel"
+        android:layout_marginTop="90dp"
+        app:sparkbutton_activeImage="@drawable/btn_reservar"
+        app:sparkbutton_inActiveImage="@drawable/btn_reservar"
+        app:sparkbutton_iconSize="120dp"
+        app:sparkbutton_primaryColor="@color/primary_color"
+        app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/btn_verReservas"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_toEndOf="@+id/btnReservar"
+        android:layout_marginTop="90dp"
+        android:layout_alignTop="@+id/optionsPanel"
+        app:sparkbutton_activeImage="@drawable/btn_ver_reservas"
+        app:sparkbutton_inActiveImage="@drawable/btn_ver_reservas"
+        app:sparkbutton_iconSize="120dp"
+        app:sparkbutton_primaryColor="@color/primary_color"
+        app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+    <LinearLayout
+        android:id="@+id/btnsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true">
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/btnCalendar"
+            android:alpha="0"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:sparkbutton_activeImage="@drawable/clanedar_icon"
+            app:sparkbutton_inActiveImage="@drawable/clanedar_icon"
+            app:sparkbutton_iconSize="80dp"
+            app:sparkbutton_primaryColor="@color/primary_color"
+            app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/btnClock"
+            android:alpha="0"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="30dp"
+            android:layout_alignTop="@+id/optionsPanel"
+            app:sparkbutton_activeImage="@drawable/clock3"
+            app:sparkbutton_inActiveImage="@drawable/clock3"
+            app:sparkbutton_iconSize="100dp"
+            app:sparkbutton_primaryColor="@color/primary_color"
+            app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/completed1"
+        android:alpha="0"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/btnsLayout"
+        android:layout_marginLeft="118dp"
+        android:src="@drawable/task_not_completed"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"></ImageView>
+
+    <ImageView
+        android:id="@+id/completed2"
+        android:alpha="0"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/btnsLayout"
+        android:layout_toEndOf="@id/completed1"
+        android:layout_marginLeft="75dp"
+        android:src="@drawable/task_not_completed"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"></ImageView>
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/btnHacerReserva"
+        android:alpha="0"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnsLayout"
+        android:layout_width="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="30dp"
+        app:sparkbutton_activeImage="@drawable/empty_reservar_button"
+        app:sparkbutton_inActiveImage="@drawable/empty_reservar_button"
+        app:sparkbutton_iconSize="150dp"
+        app:sparkbutton_primaryColor="@color/primary_color"
+        app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/btnUserMenu"
+        android:layout_alignTop="@id/optionsPanel"
+        android:layout_alignRight="@id/optionsPanel"
+        android:layout_marginRight="37dp"
+        android:layout_marginTop="27dp"
+        android:layout_width="50dp"
+        android:layout_height="55dp"
+        app:sparkbutton_activeImage="@drawable/menu_grid3"
+        app:sparkbutton_inActiveImage="@drawable/menu_grid3"
+        app:sparkbutton_iconSize="35dp"
+        app:sparkbutton_primaryColor="@color/primary_color"
+        app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/btnCancel"
+        android:alpha="0"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="30dp"
+        app:sparkbutton_activeImage="@drawable/cancel_btn"
+        app:sparkbutton_inActiveImage="@drawable/cancel_btn"
+        app:sparkbutton_iconSize="45dp"
+        app:sparkbutton_primaryColor="@color/primary_color"
+        app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+</RelativeLayout>
