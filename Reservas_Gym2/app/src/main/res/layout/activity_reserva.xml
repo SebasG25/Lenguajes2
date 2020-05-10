@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ReservaActivity">
 
+
     <TextView
         android:id="@+id/P1"
         android:layout_width="wrap_content"
@@ -95,7 +96,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvNombreEstudiante"
+                android:id="@+id/txtNombreEstudiante"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre Estudiante"
@@ -104,7 +105,7 @@
                 android:fontFamily="@font/acme"></TextView>
 
             <TextView
-                android:id="@+id/tvCarreraEstudiante"
+                android:id="@+id/txtCarreraEstudiante"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -218,8 +219,8 @@
         android:id="@+id/btnUserMenu"
         android:layout_alignTop="@id/optionsPanel"
         android:layout_alignRight="@id/optionsPanel"
-        android:layout_marginRight="37dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:layout_width="50dp"
         android:layout_height="55dp"
         app:sparkbutton_activeImage="@drawable/menu_grid3"

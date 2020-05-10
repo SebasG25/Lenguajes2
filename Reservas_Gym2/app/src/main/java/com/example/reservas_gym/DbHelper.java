@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-
     String tbEstudiantes = "Create Table Estudiantes (Cedula Text primary key, Nombre Text, Apellido Text, Carrera Text, Password Text)";
     String tbReservas = "Create Table Reservas (Id Integer primary key autoincrement, Id_Estudiante Integer, Fecha Text, Hora Text)";
 

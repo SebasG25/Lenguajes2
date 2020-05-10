@@ -121,8 +121,8 @@ public class SignUp extends AppCompatActivity {
                     txtId.setText("");
                     txtPass.setText("");
 
-                     GuardarEstudiante(id, name, lastname, profession, pass);
-                     finish();
+                    GuardarEstudiante(id, name, lastname, profession, pass);
+                    finish();
                 }
 
             }

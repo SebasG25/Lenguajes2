@@ -10,6 +10,7 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.spark.submitbutton.SubmitButton;
@@ -43,17 +45,17 @@ import java.util.Timer;
 public class ReservaActivity extends AppCompatActivity {
 
     private CalendarView calendar;
-    private TextView phrase1, phrase2, phrase3, phrase4, phrase5, tvNombreEstudiante, tvCarrera;
-    private int daySelected, monthSelected, yearSelected;
-    private String dateSelected;
+    private TimePicker clock;
+    private TextView phrase1, phrase2, phrase3, phrase4, phrase5, tvNombreEstudiante, tvCarreraEstudiante;
+    private int daySelected, monthSelected, yearSelected, hourSelected, minuteSelected;
     private String[] userData;
     private ImageView tennisPlayer, taskComplete1, taskComplete2;
     private SparkButton btnReservar, btnVerReservas, btnSetReservaDate, btnSetReservaTime,  btnHacerReserva, btnCancel;
     SubmitButton  btnDateSelected, btnTimeSelected;
-    private Button okDateWarningBtn;
+    private Button okDateWarningBtn, okTimeWarningBtn, okTimeWarningBtn2;
     private Calendar calendario = Calendar.getInstance();
-    private boolean reservaButtonTouched;
-    private boolean verReservasBtnTouched;
+    private boolean reservaButtonTouched, dateSelected;
+    private boolean verReservasBtnTouched, timeSelected;
 
 
     @Override
@@ -65,6 +67,7 @@ public class ReservaActivity extends AppCompatActivity {
         Bundle recup = getIntent().getExtras();
         userData = recup.getStringArray("userData");
         connect();
+        tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
         startingProcesses();
         ButtonListeners();
         /*
@@ -90,23 +93,6 @@ public class ReservaActivity extends AppCompatActivity {
 
     private void connect()
     {
-       /** calendar = findViewById(R.id.calendar);
-        btnReserve = findViewById(R.id.btn_Reserve);
-        txtDate = findViewById(R.id.txtDate);
-        rgTimes = findViewById(R.id.rgTimes);
-        time = findViewById(R.id.txtTime);
-        rb1 = findViewById(R.id.rb_810);
-        rb2 = findViewById(R.id.rb_1012);
-        rb3 = findViewById(R.id.rb_1214);
-        rb4 = findViewById(R.id.rb_1416);
-        rb5 = findViewById(R.id.rb_1618);
-        rb6 = findViewById(R.id.rb_1820);
-        rb1.setEnabled(false);
-        rb2.setEnabled(false);
-        rb3.setEnabled(false);
-        rb4.setEnabled(false);
-        rb5.setEnabled(false);
-        rb6.setEnabled(false); **/
        phrase1 = findViewById(R.id.P1);
        phrase2 = findViewById(R.id.P2);
        phrase3 = findViewById(R.id.P3);
@@ -120,11 +106,8 @@ public class ReservaActivity extends AppCompatActivity {
        btnCancel = findViewById(R.id.btnCancel);
        taskComplete1 = findViewById(R.id.completed1);
        taskComplete2 = findViewById(R.id.completed2);
-       tvNombreEstudiante = findViewById(R.id.tvNombreEstudiante);
-       tvCarrera = findViewById(R.id.tvCarreraEstudiante);
-       tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
-       tvCarrera.setText(userData[3]);
-
+       tvNombreEstudiante = findViewById(R.id.txtNombreEstudiante);
+        tvCarreraEstudiante = findViewById(R.id.txtCarreraEstudiante);
     }
     private void startingProcesses()
     {
@@ -136,6 +119,8 @@ public class ReservaActivity extends AppCompatActivity {
         btnSetReservaTime.setClickable(false);
         btnSetReservaDate.setEnabled(false);
         btnSetReservaDate.setClickable(false);
+        tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
+        tvCarreraEstudiante.setText(userData[3]);
 
         //Animations.
         phrase1.animate().setStartDelay(700).setDuration(1000).alpha(1);
@@ -144,7 +129,6 @@ public class ReservaActivity extends AppCompatActivity {
         phrase4.animate().setStartDelay(5500).setDuration(800).alpha(1);
         phrase5.animate().setStartDelay(6500).setDuration(800).alpha(1);
     }
-
     private void animations(int which)
     {
         //reservar buttons animations.
@@ -152,6 +136,7 @@ public class ReservaActivity extends AppCompatActivity {
         {
             if(!reservaButtonTouched)
             {
+                //tennisPlayer.animate().setDuration(300).alpha(0);
                 phrase1.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase2.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase3.animate().setStartDelay(0).setDuration(300).alpha(0);
@@ -170,7 +155,7 @@ public class ReservaActivity extends AppCompatActivity {
         {
             if(!verReservasBtnTouched)
             {
-                tennisPlayer.animate().setDuration(800).alpha(0);
+                //tennisPlayer.animate().setDuration(800).alpha(0);
                 phrase1.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase2.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase3.animate().setStartDelay(0).setDuration(300).alpha(0);
@@ -182,6 +167,7 @@ public class ReservaActivity extends AppCompatActivity {
 
          else if(which == 3)
         {
+            //tennisPlayer.animate().setDuration(800).alpha(1);
             phrase1.animate().setStartDelay(0).setDuration(300).alpha(1);
             phrase2.animate().setStartDelay(0).setDuration(300).alpha(1);
             phrase3.animate().setStartDelay(0).setDuration(300).alpha(1);
@@ -218,13 +204,24 @@ public class ReservaActivity extends AppCompatActivity {
         btnHacerReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnHacerReserva.animate().setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        btnHacerReserva.setActiveImage(R.drawable.reserva_exitosa_button);
-                        btnHacerReserva.setInactiveImage(R.drawable.reserva_exitosa_button);
-                    }
-                });
+                if(dateSelected && timeSelected)
+                {
+                    btnHacerReserva.setActiveImage(R.drawable.reserva_exitosa_button);
+                    btnHacerReserva.setInactiveImage(R.drawable.reserva_exitosa_button);
+                    //EL CODIGO PARA RESERVAR E INGRESAR LA RESERVA EN LA BASE DE DATOS AQUI
+                    String dia = daySelected + "";
+                    String mes = monthSelected + "";
+                    String año = yearSelected + "";
+                    String h = hourSelected + "";
+                    String m = minuteSelected + "0";
+                    String fecha = dia + "/" + mes + "/" + año;
+                    String hora = h + ":" + m;
+                    GuardarReserva(userData[0], fecha, hora);
+                }
+                else
+                {
+                    //Yo hago un cosos para esto ahora
+                }
 
             }
         });
@@ -249,21 +246,36 @@ public class ReservaActivity extends AppCompatActivity {
                     btnSetReservaTime.setClickable(false);
                     btnSetReservaDate.setEnabled(false);
                     btnSetReservaDate.setClickable(false);
+                    btnHacerReserva.setEnabled(false);
+                    btnHacerReserva.setClickable(false);
                     verReservasBtnTouched = false;
                     reservaButtonTouched = false;
-                    dateSelected = "";
+                    hourSelected = 0;
+                    minuteSelected = -1;
+                    monthSelected = 0;
+                    daySelected = 0;
+                    yearSelected = 0;
+                    timeSelected = false;
+                    dateSelected = false;
                 }
             }
         });
         btnSetReservaDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                daySelected = 0;
+                monthSelected = 0;
+                yearSelected = 0;
+                taskComplete1.setImageResource(R.drawable.task_not_completed);
                 makeDialogs(1);
             }
         });
         btnSetReservaTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hourSelected = 0;
+                minuteSelected = -1;
+                taskComplete2.setImageResource(R.drawable.task_not_completed);
                 makeDialogs(2);
             }
         });
@@ -282,7 +294,6 @@ public class ReservaActivity extends AppCompatActivity {
             calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                 @Override
                 public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                    dateSelected = dayOfMonth  + "/" + (month + 1) + "/" + year;
                     daySelected = dayOfMonth;
                     monthSelected = (month + 1);
                     yearSelected = year;
@@ -303,6 +314,20 @@ public class ReservaActivity extends AppCompatActivity {
             dialog.setContentView(R.layout.my_clock_layout);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             btnTimeSelected = dialog.findViewById(R.id.btnTimeSetComplete);
+            clock = dialog.findViewById(R.id.myTimePicker);
+            clock.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    minuteSelected = minute;
+                    hourSelected = hourOfDay;
+                }
+            });
+            btnTimeSelected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    verifyTime(hourSelected, minuteSelected, dialog);
+                }
+            });
             dialog.show();
         }
 
@@ -322,11 +347,48 @@ public class ReservaActivity extends AppCompatActivity {
             });
             dialog.show();
         }
+
+        //error dialog for hour passed the gym attention time
+        else if(whichOne == 4)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.time_warning);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            okTimeWarningBtn = dialog.findViewById(R.id.OkTimeWarningBtn);
+            okTimeWarningBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    makeDialogs(2);
+                }
+            });
+            dialog.show();
+        }
+
+        //error message for hour not being pair
+        else if(whichOne == 5)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.time2_warning);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            okTimeWarningBtn2 = dialog.findViewById(R.id.OkTimeWarningBtn2);
+            okTimeWarningBtn2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    makeDialogs(2);
+                }
+            });
+            dialog.show();
+        }
     }
     /*
    Verifica que la fecha que eligió el usuario sea la correcta (Un día después del día actual)
     */
-    private void verifyDate(int daySelected, int monthSelected, int yearSelected, Dialog currentDialog){
+    private void verifyDate(int daySelected, int monthSelected, int yearSelected, Dialog currentDialog)
+    {
         CountDownTimer myTimer;
         final Dialog mycurrentDialog = currentDialog;
         int actualDay = calendario.get(Calendar.DAY_OF_MONTH);
@@ -343,6 +405,17 @@ public class ReservaActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     mycurrentDialog.dismiss();
+                    dateSelected = true;
+                    if(timeSelected)
+                    {
+                        btnHacerReserva.setEnabled(true);
+                        btnHacerReserva.setClickable(true);
+                    }
+                    else
+                    {
+                        btnHacerReserva.setEnabled(false);
+                        btnHacerReserva.setClickable(false);
+                    }
                     taskComplete1.setImageResource(R.drawable.task_completed);
                 }
             }.start();
@@ -354,5 +427,71 @@ public class ReservaActivity extends AppCompatActivity {
             makeDialogs(3);
         }
 
+    }
+    private void verifyTime(int hourSelected, int minuteSelected, Dialog mycurrentDialog)
+    {
+        final Dialog myCurrentDialog = mycurrentDialog;
+        if(hourSelected % 2 == 0 && hourSelected <= 18 && hourSelected >= 8 && minuteSelected == 0)
+        {
+            CountDownTimer myTimer;
+            myTimer = new CountDownTimer(1200, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                }
+
+                @Override
+                public void onFinish() {
+                    myCurrentDialog.dismiss();
+                    timeSelected = true;
+                    if(dateSelected)
+                    {
+                        btnHacerReserva.setEnabled(true);
+                        btnHacerReserva.setClickable(true);
+                    }
+                    else
+                    {
+                        btnHacerReserva.setEnabled(false);
+                        btnHacerReserva.setClickable(false);
+                    }
+                    taskComplete2.setImageResource(R.drawable.task_completed);
+                }
+            }.start();
+        }
+        else if(hourSelected > 18)
+        {
+            mycurrentDialog.dismiss();
+            makeDialogs(4);
+        }
+        else if(hourSelected < 8)
+        {
+            mycurrentDialog.dismiss();
+            makeDialogs(4);
+        }
+        else if(minuteSelected != 0)
+        {
+            mycurrentDialog.dismiss();
+            makeDialogs(5);
+        }
+        else if(hourSelected % 2 != 0)
+        {
+            mycurrentDialog.dismiss();
+            makeDialogs(5);
+        }
+    }
+
+    private void GuardarReserva(String cedula, String fecha, String hora){
+        DbHelper helper = new DbHelper(this, "BD", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        try{
+            String insert = "INSERT INTO Reservas(Id_estudiante, Fecha, Hora) VALUES('"+cedula+"', '"+fecha+"', '"+hora+"')";
+
+            db.execSQL(insert);
+            db.close();
+
+            Toast.makeText(this, "Reserva registrada exitosamente", Toast.LENGTH_LONG).show();
+        }catch (Exception ex){
+            Toast.makeText(this, "Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 }

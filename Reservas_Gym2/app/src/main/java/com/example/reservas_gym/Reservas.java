@@ -22,15 +22,15 @@ import java.util.ArrayList;
 import java.util.Timer;
 
 public class Reservas extends AppCompatActivity {
-private ImageView tipsPanel;
-private ImageView logo;
-private ImageView bottom;
-private TextView txtTip;
-private FadingTextView txtTipView;
-private TextView txtName;
-private String[] userData;
-private CountDownTimer myTimer;
-private ViewFlipper myVF;
+    private ImageView tipsPanel;
+    private ImageView logo;
+    private ImageView bottom;
+    private TextView txtTip;
+    private FadingTextView txtTipView;
+    private TextView txtName;
+    private String[] userData;
+    private CountDownTimer myTimer;
+    private ViewFlipper myVF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +94,9 @@ private ViewFlipper myVF;
      */
     public void launchReservas()
     {
-                Intent intent = ReservaActivity.launcheME(Reservas.this);
-                intent.putExtra("userData", userData);
-                startActivity(intent);
+        Intent intent = ReservaActivity.launcheME(Reservas.this);
+        intent.putExtra("userData", userData);
+        startActivity(intent);
     }
+
 }

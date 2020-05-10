@@ -2,8 +2,8 @@ package com.example.reservas_gym;
 
 public class Estudiante {
     /*
-    Atributos del Estudiante
-     */
+     Atributos del Estudiante
+      */
     String nombre;
     String apellido;
     String carrera;
