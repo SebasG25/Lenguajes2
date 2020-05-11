@@ -4,19 +4,17 @@ public class Reserva {
     /*
     Atributos de la reserva
      */
-    private String name;
-    private String lastname;
-    private String id;
+    private String idReserva;
+    private String idEstudiante;
     private String date;
     private String hour;
 
     /*
     Constructor de la clase
      */
-    public Reserva(String name, String lastname, String id, String date, String hour){
-        setName(name);
-        setLastname(lastname);
-        setId(id);
+    public Reserva(String idReserva,  String idEstudiante, String date, String hour){
+        setIdReserva(idReserva);
+        setId(idEstudiante);
         setDate(date);
         setHour(hour);
     }
@@ -25,28 +23,20 @@ public class Reserva {
     Encapsulamiento de los atributos de la clase
      */
 
-    public String getName() {
-        return name;
+    public String getIdReserva(){
+        return idReserva;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setIdReserva(String idReserva){
+        this.idReserva = idReserva;
     }
 
     public String getId() {
-        return id;
+        return idEstudiante;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String idEstudiante) {
+        this.idEstudiante= idEstudiante;
     }
 
     public String getDate() {
@@ -57,10 +47,12 @@ public class Reserva {
         this.date = date;
     }
 
-    public String getReservationInfo()
+    /*public String getReservationInfo()
     {
-        return (name + " " + lastname + " \n" + "Con ID: " + id + "\n" + "Fecha de reserva: " + date + "\n" + "Hora de reserva: " + hour);
+        return (name + " " + lastname + " \n" + "Con ID: " + idEstudiante + "\n" + "Fecha de reserva: " + date + "\n" + "Hora de reserva: " + hour);
     }
+    */
+
 
     public String getHour() {
         return hour;
