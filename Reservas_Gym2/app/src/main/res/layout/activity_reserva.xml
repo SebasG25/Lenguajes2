@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ReservaActivity">
 
-
     <TextView
         android:id="@+id/P1"
         android:layout_width="wrap_content"
@@ -200,20 +199,16 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"></ImageView>
 
-    <com.varunest.sparkbutton.SparkButton
+    <Button
         android:id="@+id/btnHacerReserva"
         android:alpha="0"
+        android:background="@drawable/empty_reservar_button"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/btnsLayout"
-        android:layout_width="150dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="30dp"
-        app:sparkbutton_activeImage="@drawable/empty_reservar_button"
-        app:sparkbutton_inActiveImage="@drawable/empty_reservar_button"
-        app:sparkbutton_iconSize="150dp"
-        app:sparkbutton_primaryColor="@color/primary_color"
-        app:sparkbutton_secondaryColor="@color/secondary_color" />
+        android:layout_width="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp" />
 
     <com.varunest.sparkbutton.SparkButton
         android:id="@+id/btnUserMenu"
@@ -242,5 +237,49 @@
         app:sparkbutton_iconSize="45dp"
         app:sparkbutton_primaryColor="@color/primary_color"
         app:sparkbutton_secondaryColor="@color/secondary_color" />
+
+    <TextView
+        android:id="@+id/txtNameReserva"
+        android:alpha="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="170dp"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:fontFamily="@font/acme"
+        android:layout_centerHorizontal="true"
+        android:hint="sdfsd fs">
+    </TextView>
+
+    <TextView
+        android:id="@+id/txtReservaInfo"
+        android:alpha="0"
+        android:layout_below="@+id/txtNameReserva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:fontFamily="@font/acme"
+        android:layout_centerHorizontal="true"
+        android:hint="sdfsd fs">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/emoji"
+        android:alpha="0"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_toEndOf="@+id/txtNameReserva"
+        android:layout_alignTop="@+id/txtNameReserva"
+        android:src="@drawable/hello_emoji">
+    </ImageView>
+
+
 
 </RelativeLayout>

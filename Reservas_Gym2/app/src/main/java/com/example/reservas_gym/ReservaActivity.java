@@ -4,18 +4,24 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.style.UpdateAppearance;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +31,7 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -46,20 +53,21 @@ public class ReservaActivity extends AppCompatActivity {
 
     private CalendarView calendar;
     private TimePicker clock;
-    private TextView phrase1, phrase2, phrase3, phrase4, phrase5, tvNombreEstudiante, tvCarreraEstudiante;
+    private TextView phrase1, phrase2, phrase3, phrase4, phrase5, tvNombreEstudiante, tvCarreraEstudiante, reservaInfo, reservaName;
     private int daySelected, monthSelected, yearSelected, hourSelected, minuteSelected;
     private String[] userData;
-    private ImageView tennisPlayer, taskComplete1, taskComplete2;
-    private SparkButton btnReservar, btnVerReservas, btnSetReservaDate, btnSetReservaTime,  btnHacerReserva, btnCancel;
+    private ImageView taskComplete1, taskComplete2, emoji;
+    private SparkButton btnReservar, btnVerReservas, btnSetReservaDate, btnSetReservaTime, btnCancel, btnshowUserOptions;
     SubmitButton  btnDateSelected, btnTimeSelected;
-    private Button okDateWarningBtn, okTimeWarningBtn, okTimeWarningBtn2;
+    private Button okDateWarningBtn, okTimeWarningBtn, okTimeWarningBtn2, okNoReservaWarning, yesDeleteReservaBtn, noDeleteReservaBtn, reservaEliminadaOkBtn, yaTienesReservaOkBtn, btnHacerReserva;
     private Calendar calendario = Calendar.getInstance();
     private boolean reservaButtonTouched, dateSelected;
     private boolean verReservasBtnTouched, timeSelected;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -70,27 +78,7 @@ public class ReservaActivity extends AppCompatActivity {
         tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
         startingProcesses();
         ButtonListeners();
-        /*
-        En un textview pone la fecha que el usuario le dio tap
-         */
-       /** calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
-                dayPicked = day + "";
-                monthPicked = (month + 1) + "";
-                yearPicked = year + "";
-                date = day + "/" + (month + 1) + "/" + year;
-                txtDate.setText(date);
-                rb1.setEnabled(true);
-                rb2.setEnabled(true);
-                rb3.setEnabled(true);
-                rb4.setEnabled(true);
-                rb5.setEnabled(true);
-                rb6.setEnabled(true);
-            }
-        });**/
     }
-
     private void connect()
     {
        phrase1 = findViewById(R.id.P1);
@@ -98,16 +86,20 @@ public class ReservaActivity extends AppCompatActivity {
        phrase3 = findViewById(R.id.P3);
        phrase4 = findViewById(R.id.P4);
        phrase5 = findViewById(R.id.P5);
+       reservaInfo = findViewById(R.id.txtReservaInfo);
+       reservaName = findViewById(R.id.txtNameReserva);
+       emoji = findViewById(R.id.emoji);
        btnReservar = findViewById(R.id.btnReservar);
        btnVerReservas = findViewById(R.id.btn_verReservas);
        btnHacerReserva = findViewById(R.id.btnHacerReserva);
        btnSetReservaTime = findViewById(R.id.btnClock);
        btnSetReservaDate = findViewById(R.id.btnCalendar);
        btnCancel = findViewById(R.id.btnCancel);
+       btnshowUserOptions = findViewById(R.id.btnUserMenu);
        taskComplete1 = findViewById(R.id.completed1);
        taskComplete2 = findViewById(R.id.completed2);
        tvNombreEstudiante = findViewById(R.id.txtNombreEstudiante);
-        tvCarreraEstudiante = findViewById(R.id.txtCarreraEstudiante);
+       tvCarreraEstudiante = findViewById(R.id.txtCarreraEstudiante);
     }
     private void startingProcesses()
     {
@@ -129,14 +121,15 @@ public class ReservaActivity extends AppCompatActivity {
         phrase4.animate().setStartDelay(5500).setDuration(800).alpha(1);
         phrase5.animate().setStartDelay(6500).setDuration(800).alpha(1);
     }
+
     private void animations(int which)
     {
         //reservar buttons animations.
         if(which == 1)
         {
-            if(!reservaButtonTouched)
-            {
-                //tennisPlayer.animate().setDuration(300).alpha(0);
+                reservaName.animate().setDuration(250).setStartDelay(0).alpha(0);
+                reservaInfo.animate().setDuration(250).setStartDelay(0).alpha(0);
+                emoji.animate().setDuration(250).setStartDelay(0).alpha(0);
                 phrase1.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase2.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase3.animate().setStartDelay(0).setDuration(300).alpha(0);
@@ -148,14 +141,12 @@ public class ReservaActivity extends AppCompatActivity {
                 btnSetReservaDate.animate().setStartDelay(100).setDuration(300).alpha(1);
                 btnHacerReserva.animate().setStartDelay(100).setDuration(300).alpha(1);
                 btnCancel.animate().setStartDelay(0).setDuration(300).alpha(1);
-            }
         }
         //ver reservas button animations
          else if(which == 2)
         {
             if(!verReservasBtnTouched)
             {
-                //tennisPlayer.animate().setDuration(800).alpha(0);
                 phrase1.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase2.animate().setStartDelay(0).setDuration(300).alpha(0);
                 phrase3.animate().setStartDelay(0).setDuration(300).alpha(0);
@@ -164,10 +155,9 @@ public class ReservaActivity extends AppCompatActivity {
                 verReservasBtnTouched = true;
             }
         }
-
+        //cancel button animation
          else if(which == 3)
         {
-            //tennisPlayer.animate().setDuration(800).alpha(1);
             phrase1.animate().setStartDelay(0).setDuration(300).alpha(1);
             phrase2.animate().setStartDelay(0).setDuration(300).alpha(1);
             phrase3.animate().setStartDelay(0).setDuration(300).alpha(1);
@@ -179,36 +169,66 @@ public class ReservaActivity extends AppCompatActivity {
             btnSetReservaDate.animate().setStartDelay(0).setDuration(300).alpha(0);
             btnHacerReserva.animate().setStartDelay(0).setDuration(300).alpha(0);
             btnCancel.animate().setStartDelay(0).setDuration(300).alpha(0);
+            reservaName.animate().setDuration(250).setStartDelay(0).alpha(0);
+            reservaInfo.animate().setDuration(250).setStartDelay(0).alpha(0);
+            emoji.animate().setDuration(250).setStartDelay(0).alpha(0);
+        }
+
+         else if(which == 4)
+        {
+            reservaName.animate().setDuration(630).setStartDelay(800).alpha(1);
+            reservaInfo.animate().setDuration(630).setStartDelay(800).alpha(1);
+            emoji.animate().setDuration(400).setStartDelay(800).alpha(1);
+
+            taskComplete1.animate().setStartDelay(0).setDuration(300).alpha(0);
+            taskComplete2.animate().setStartDelay(0).setDuration(300).alpha(0);
+            btnSetReservaTime.animate().setStartDelay(0).setDuration(300).alpha(0);
+            btnSetReservaDate.animate().setStartDelay(0).setDuration(300).alpha(0);
+            btnHacerReserva.animate().setStartDelay(0).setDuration(300).alpha(0);
+            btnCancel.animate().setStartDelay(0).setDuration(300).alpha(1);
+
+            phrase1.animate().setStartDelay(0).setDuration(300).alpha(0);
+            phrase2.animate().setStartDelay(0).setDuration(300).alpha(0);
+            phrase3.animate().setStartDelay(0).setDuration(300).alpha(0);
+            phrase4.animate().setStartDelay(0).setDuration(300).alpha(0);
+            phrase5.animate().setStartDelay(0).setDuration(300).alpha(0);
         }
     }
+
     public static  Intent launcheME(Context ctx)
+
     {
         return new Intent(ctx, ReservaActivity.class);
     }
+
     private void ButtonListeners()
     {
         btnReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 animations(1);
+                btnHacerReserva.setBackgroundResource(R.drawable.empty_reservar_button);
                 btnCancel.setEnabled(true);
                 btnCancel.setClickable(true);
                 btnSetReservaTime.setEnabled(true);
                 btnSetReservaTime.setClickable(true);
                 btnSetReservaDate.setEnabled(true);
                 btnSetReservaDate.setClickable(true);
+                btnReservar.setEnabled(false);
+                btnReservar.setClickable(false);
+                btnVerReservas.setEnabled(true);
+                btnVerReservas.setClickable(true);
                 reservaButtonTouched = true;
-
+                taskComplete1.setImageResource(R.drawable.task_not_completed);
+                taskComplete2.setImageResource(R.drawable.task_not_completed);
             }
         });
         btnHacerReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dateSelected && timeSelected)
+                if(!verificarSiYaReservo())
                 {
-                    btnHacerReserva.setActiveImage(R.drawable.reserva_exitosa_button);
-                    btnHacerReserva.setInactiveImage(R.drawable.reserva_exitosa_button);
-                    //EL CODIGO PARA RESERVAR E INGRESAR LA RESERVA EN LA BASE DE DATOS AQUI
+                    btnHacerReserva.setBackgroundResource(R.drawable.reserva_exitosa_button);
                     String dia = daySelected + "";
                     String mes = monthSelected + "";
                     String año = yearSelected + "";
@@ -217,10 +237,17 @@ public class ReservaActivity extends AppCompatActivity {
                     String fecha = dia + "/" + mes + "/" + año;
                     String hora = h + ":" + m;
                     GuardarReserva(userData[0], fecha, hora);
+                    btnHacerReserva.setEnabled(false);
+                    btnHacerReserva.setClickable(false);
+                    btnReservar.setEnabled(true);
+                    btnReservar.setClickable(true);
+                    btnVerReservas.setEnabled(true);
+                    btnVerReservas.setClickable(true);
+                    animations(3);
                 }
                 else
                 {
-                    //Yo hago un cosos para esto ahora
+                    makeDialogs(9);
                 }
 
             }
@@ -228,7 +255,15 @@ public class ReservaActivity extends AppCompatActivity {
         btnVerReservas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animations(1);
+                verReservas();
+                btnCancel.setClickable(true);
+                btnCancel.setEnabled(true);
+                btnVerReservas.setEnabled(false);
+                btnVerReservas.setClickable(false);
+                btnReservar.setEnabled(true);
+                btnReservar.setClickable(true);
+                verReservasBtnTouched = true;
+                animations(4);
             }
         });
 
@@ -248,6 +283,10 @@ public class ReservaActivity extends AppCompatActivity {
                     btnSetReservaDate.setClickable(false);
                     btnHacerReserva.setEnabled(false);
                     btnHacerReserva.setClickable(false);
+                    btnVerReservas.setEnabled(true);
+                    btnVerReservas.setClickable(true);
+                    btnReservar.setEnabled(true);
+                    btnReservar.setClickable(true);
                     verReservasBtnTouched = false;
                     reservaButtonTouched = false;
                     hourSelected = 0;
@@ -266,6 +305,8 @@ public class ReservaActivity extends AppCompatActivity {
                 daySelected = 0;
                 monthSelected = 0;
                 yearSelected = 0;
+                btnHacerReserva.setEnabled(false);
+                btnHacerReserva.setClickable(false);
                 taskComplete1.setImageResource(R.drawable.task_not_completed);
                 makeDialogs(1);
             }
@@ -275,11 +316,60 @@ public class ReservaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 hourSelected = 0;
                 minuteSelected = -1;
+                btnHacerReserva.setEnabled(false);
+                btnHacerReserva.setClickable(false);
                 taskComplete2.setImageResource(R.drawable.task_not_completed);
                 makeDialogs(2);
             }
         });
+
+        btnshowUserOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //PopupMenu popupMenu = new PopupMenu(ReservaActivity.this, btnshowUserOptions);
+                ContextThemeWrapper ctw = new ContextThemeWrapper(ReservaActivity.this, R.style.CustomPopupTheme);
+                PopupMenu popupMenu = new PopupMenu(ctw, v, Gravity.START);
+                popupMenu.inflate(R.menu.show_user_options);
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                       switch (item.getItemId())
+                       {
+                           case R.id.option1:
+                               makeDialogs(7);
+                               return true;
+                           case R.id.option2:
+                                goBack();
+                                finish();
+                               return true;
+                           default:
+                               return false;
+                       }
+                    }
+                });
+                popupMenu.show();
+            }
+        });
     }
+
+    private void GuardarReserva(String cedula, String fecha, String hora)
+    {
+        DbHelper helper = new DbHelper(this, "BD", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        try{
+            String insert = "INSERT INTO Reservas(Id_estudiante, Fecha, Hora) VALUES('"+cedula+"', '"+fecha+"', '"+hora+"')";
+
+            db.execSQL(insert);
+            db.close();
+
+            Toast.makeText(this, "Reserva exitosa", Toast.LENGTH_LONG).show();
+        }catch (Exception ex){
+            Toast.makeText(this, "Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void makeDialogs(int whichOne)
     {
 
@@ -383,6 +473,82 @@ public class ReservaActivity extends AppCompatActivity {
             });
             dialog.show();
         }
+
+        //no reserva warning dialog
+        else if(whichOne == 6)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.no_reserva_warning);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            okNoReservaWarning = dialog.findViewById(R.id.noReservaOkBtn);
+            okNoReservaWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        //dialog preguntando si en realidad quiero eliminar la reserva
+        else if(whichOne == 7)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.eliminar_reserva_warning);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+             yesDeleteReservaBtn = dialog.findViewById(R.id.deleteReservaWrningYesBtn);
+             noDeleteReservaBtn = dialog.findViewById(R.id.deleteReservaWrningCancelBtn);
+            yesDeleteReservaBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    eliminarReserva();
+                    dialog.dismiss();
+                }
+            });
+            noDeleteReservaBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        //reserva eliminada exitosamente
+        else if(whichOne == 8)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.reserva_eliminada_exitosamente);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            reservaEliminadaOkBtn = dialog.findViewById(R.id.reservaEliminadaOkBtn);
+            reservaEliminadaOkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        //Ya tienes reserva dialog
+        else if(whichOne == 9)
+        {
+            final Dialog dialog = new Dialog(ReservaActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.ya_tiene_reserva);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            yaTienesReservaOkBtn = dialog.findViewById(R.id.yaTieneReservaOkBtn);
+            yaTienesReservaOkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
     }
     /*
    Verifica que la fecha que eligió el usuario sea la correcta (Un día después del día actual)
@@ -406,16 +572,8 @@ public class ReservaActivity extends AppCompatActivity {
                 public void onFinish() {
                     mycurrentDialog.dismiss();
                     dateSelected = true;
-                    if(timeSelected)
-                    {
-                        btnHacerReserva.setEnabled(true);
-                        btnHacerReserva.setClickable(true);
-                    }
-                    else
-                    {
-                        btnHacerReserva.setEnabled(false);
-                        btnHacerReserva.setClickable(false);
-                    }
+                    btnHacerReserva.setEnabled(true);
+                    btnHacerReserva.setClickable(true);
                     taskComplete1.setImageResource(R.drawable.task_completed);
                 }
             }.start();
@@ -428,6 +586,7 @@ public class ReservaActivity extends AppCompatActivity {
         }
 
     }
+
     private void verifyTime(int hourSelected, int minuteSelected, Dialog mycurrentDialog)
     {
         final Dialog myCurrentDialog = mycurrentDialog;
@@ -443,16 +602,8 @@ public class ReservaActivity extends AppCompatActivity {
                 public void onFinish() {
                     myCurrentDialog.dismiss();
                     timeSelected = true;
-                    if(dateSelected)
-                    {
-                        btnHacerReserva.setEnabled(true);
-                        btnHacerReserva.setClickable(true);
-                    }
-                    else
-                    {
-                        btnHacerReserva.setEnabled(false);
-                        btnHacerReserva.setClickable(false);
-                    }
+                    btnHacerReserva.setEnabled(true);
+                    btnHacerReserva.setClickable(true);
                     taskComplete2.setImageResource(R.drawable.task_completed);
                 }
             }.start();
@@ -479,19 +630,113 @@ public class ReservaActivity extends AppCompatActivity {
         }
     }
 
-    private void GuardarReserva(String cedula, String fecha, String hora){
+    private void verReservas()
+    {
+        int horaConvertida = 0;
+        String tardeOmorning = "";
         DbHelper helper = new DbHelper(this, "BD", null, 1);
         SQLiteDatabase db = helper.getWritableDatabase();
+        String getTimeSql = "Select Hora from Reservas where Id_Estudiante = '" + userData[0] + "'";
+        String hora = "";
+        Cursor cursor2 = db.rawQuery(getTimeSql, null);
+        if(cursor2.moveToFirst())
+        {
+            hora = cursor2.getString(0);
+            horaConvertida = convertTime(hora);
+            if(horaConvertida == 12)
+            {
+                tardeOmorning = ":00 del medio día";
+            }
+            else if(horaConvertida > 11)
+            {
+                tardeOmorning = ":00 de la tarde";
+            }
+            else
+            {
+                tardeOmorning = ":00 de la mañana";
+            }
+        }
+        cursor2.close();
 
-        try{
-            String insert = "INSERT INTO Reservas(Id_estudiante, Fecha, Hora) VALUES('"+cedula+"', '"+fecha+"', '"+hora+"')";
 
-            db.execSQL(insert);
-            db.close();
+        String[] userName = userData[1].split(" ");
+        String line = "";
+        String sqlSequence = "Select Fecha from Reservas where Id_Estudiante = '" + userData[0] + "'";
+        Cursor cursor = db.rawQuery(sqlSequence, null);
+        if(cursor.moveToFirst())
+        {
+           line ="\n" + "Abajo encontrarás los datos de tu reserva actual \n\n Fecha: " + cursor.getString(0)  + "\n" + "Hora: " + horaConvertida + tardeOmorning;
+        }
+        else
+        {
+            line = "\n" + " En este momento no tienes ninguna reserva, ¡Anímate a reservar ahora! \n\n" + "Que tengas un lindo resto del día, y recuerda: #QuédateEnCasa";
+        }
+        reservaName.setText("Hola " + userName[0]);
+        reservaInfo.setText(line);
+        db.close();
+    }
 
-            Toast.makeText(this, "Reserva registrada exitosamente", Toast.LENGTH_LONG).show();
-        }catch (Exception ex){
-            Toast.makeText(this, "Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+    private void eliminarReserva()
+    {
+        DbHelper myHelper = new DbHelper(ReservaActivity.this, "BD", null, 1);
+        SQLiteDatabase myDB = myHelper.getWritableDatabase();
+        try
+        {
+            String sqlSequence = "select Id_estudiante from Reservas where Id_estudiante= '"+ userData[0] +"'";
+            Cursor cursor = myDB.rawQuery(sqlSequence, null);
+            if(cursor.moveToFirst())
+            {
+                makeDialogs(8);
+                myDB.execSQL("delete from Reservas where Id_estudiante= '"+ userData[0] +"'");
+            }
+            else
+            {
+                makeDialogs(6);
+            }
+            cursor.close();
+            myDB.close();
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private int convertTime(String timeToConvert)
+    {
+        String[] getHoraTexto = timeToConvert.split(":");
+        int convertirHora = Integer.parseInt(getHoraTexto[0]);
+        return convertirHora;
+    }
+
+    public void goBack()
+    {
+        Intent intent = Login.launcheME(ReservaActivity.this);
+        startActivity(intent);
+    }
+
+    private boolean verificarSiYaReservo()
+    {
+        boolean found = false;
+        DbHelper myHelper = new DbHelper(ReservaActivity.this, "BD", null, 1);
+        SQLiteDatabase myDB = myHelper.getWritableDatabase();
+        try
+        {
+            String sqlSequence = "select Id_estudiante from Reservas where Id_estudiante= '" + userData[0] + "'";
+            Cursor cursor = myDB.rawQuery(sqlSequence, null);
+            if (cursor.moveToFirst()) {
+                found = true;
+            } else {
+            }
+            cursor.close();
+            myDB.close();
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+        }
+        return found;
+    }
+
+
 }

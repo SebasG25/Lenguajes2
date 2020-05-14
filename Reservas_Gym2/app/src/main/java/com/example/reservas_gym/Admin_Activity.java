@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,19 +24,12 @@ public class Admin_Activity extends AppCompatActivity {
     ImageButton viewReg;
     TextView txtAdmin;
     TextView ver;
-    DbHelper helper;
-    ArrayList<Reserva> reservas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
-        /*
-        AQUÍ SE IMPLEMENTA LA LISTA CON LAS RESERVAS ACTUALES
-         */
-        initializeList();
-        helper = new DbHelper(getApplicationContext(), "BD", null, 1);
         animate();
         viewReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,13 +38,6 @@ public class Admin_Activity extends AppCompatActivity {
             }
         });
 
-    }
-    /*
-        CÓDIGO NUEVO
-     */
-
-    private void initializeList() {
-        reservas = showReservesDB();
     }
 
     private void connect()
@@ -83,7 +66,6 @@ public class Admin_Activity extends AppCompatActivity {
     /*
     Método de la clase Reserva donde obtiene toda la información de la reserva
      */
-    /*
     private String getReservas(ArrayList<Reserva> list)
     {
         String info= "";
@@ -98,8 +80,6 @@ public class Admin_Activity extends AppCompatActivity {
         }
         return info;
     }
-
-     */
 
     /*
     Se crea un Alert dialog para mostrar las reservas con un textview (configurado en reserva_view_layout.xml)
@@ -120,33 +100,6 @@ public class Admin_Activity extends AppCompatActivity {
         });
         alert = builder.create();
         alert.show();
-    }
-
-    /*
-    CÓDIGO NUEVO
-     */
-
-    private ArrayList<Reserva> showReservesDB(){
-        ArrayList<Reserva> reservas = new ArrayList<>();
-        SQLiteDatabase db = helper.getWritableDatabase();
-        String SQL = "Select * from Reservas";
-        Cursor c = db.rawQuery(SQL, null);
-        try{
-            if(c.moveToFirst()){
-                do{
-                    String idReserva = c.getString(0);
-                    String idEstudiante = c.getString(1);
-                    String fecha = c.getString(2);
-                    String hora = c.getString(3);
-                    reservas.add(new Reserva(idReserva, idEstudiante, fecha, hora));
-                }while(c.moveToNext());
-            }
-            c.close();
-            db.close();
-        }catch(Exception e){
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-        return reservas;
     }
 
     /*
