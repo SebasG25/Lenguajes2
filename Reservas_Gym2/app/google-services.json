@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "929240894525",
+    "firebase_url": "https://reservasgym-3c358.firebaseio.com",
+    "project_id": "reservasgym-3c358",
+    "storage_bucket": "reservasgym-3c358.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929240894525:android:0aae3877f3c1bbbfc6ae54",
+        "android_client_info": {
+          "package_name": "com.example.reservas_gym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929240894525-37morj376tsaibfuagh13d4re1ou9di6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.reservas_gym",
+            "certificate_hash": "a11e70a66cd93f4619af8241abb2076eaa5ce3a2"
+          }
+        },
+        {
+          "client_id": "929240894525-apked8b5g0gt9sct75cuahjutmm367b1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOZ3kS09TRBgux8w4IpXKzsIJJhvHk1-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929240894525-apked8b5g0gt9sct75cuahjutmm367b1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

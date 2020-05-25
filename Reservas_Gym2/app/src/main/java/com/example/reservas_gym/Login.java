@@ -1,5 +1,6 @@
 package com.example.reservas_gym;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -18,14 +19,20 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
     private VideoView udemBg;
+    private FirebaseAuth mAuth;
     MediaPlayer player;
     int playerVidPos;
     Button btnSignUp, btnLogin;
-    String[] userData = new String[4];
+    String[] userData = new String[1];
     EditText txtId, txtPass;
     DbHelper helper;
     static final String account = "123";
@@ -38,10 +45,16 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         connect();
+        mAuth = FirebaseAuth.getInstance();
         helper = new DbHelper(getApplicationContext(), "BD", null, 1);
         setVideo();
         launchSignUp();
-        verifyUser();
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login(txtId.getText().toString().trim(), txtPass.getText().toString().trim());
+            }
+        });
     }
 
     /*
@@ -114,6 +127,33 @@ public class Login extends AppCompatActivity {
         Intent intent = Reservas.launcheME(Login.this);
         intent.putExtra("userData", user);
         startActivity(intent);
+    }
+
+    private void login(String email, String password){
+        if(email.equalsIgnoreCase("bitas200225@gmail.com") && password.equals("sebas123")){
+            txtId.setText("");
+            txtPass.setText("");
+            Toast.makeText(Login.this, "Bienvenido administrador", Toast.LENGTH_SHORT).show();
+            launchAdminPanel();
+        }else{
+            userData[0] = email;
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                txtId.setText("");
+                                txtPass.setText("");
+                                launchReserva(userData);
+                                Toast.makeText(Login.this, "Se ha ingresado con éxito", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(Login.this, "No se pudo completar el ingreso", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+        }
     }
 
     /*

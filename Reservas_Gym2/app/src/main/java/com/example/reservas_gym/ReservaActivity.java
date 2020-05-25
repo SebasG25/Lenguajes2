@@ -75,7 +75,7 @@ public class ReservaActivity extends AppCompatActivity {
         Bundle recup = getIntent().getExtras();
         userData = recup.getStringArray("userData");
         connect();
-        tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
+        tvNombreEstudiante.setText(userData[0]);
         startingProcesses();
         ButtonListeners();
     }
@@ -111,8 +111,8 @@ public class ReservaActivity extends AppCompatActivity {
         btnSetReservaTime.setClickable(false);
         btnSetReservaDate.setEnabled(false);
         btnSetReservaDate.setClickable(false);
-        tvNombreEstudiante.setText(userData[1] + " " + userData[2]);
-        tvCarreraEstudiante.setText(userData[3]);
+        tvNombreEstudiante.setText(userData[0]);
+        //tvCarreraEstudiante.setText(userData[3]);
 
         //Animations.
         phrase1.animate().setStartDelay(700).setDuration(1000).alpha(1);

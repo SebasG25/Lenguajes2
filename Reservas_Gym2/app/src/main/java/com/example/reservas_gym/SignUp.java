@@ -1,5 +1,6 @@
 package com.example.reservas_gym;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -17,10 +18,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class SignUp extends AppCompatActivity {
     private VideoView udemBg;
+    private FirebaseAuth mAuth;
     MediaPlayer player;
     int playerVidPos;
 
@@ -40,10 +47,17 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         connect();
+        mAuth = FirebaseAuth.getInstance();
         helper = new DbHelper(getApplicationContext(), "BD", null, 1);
         initializeList();
         setVideo();
-        signUp();
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp(txtId.getText().toString().trim(), txtPass.getText().toString().trim());
+            }
+        });
+
     }
 
     public void connect()
@@ -83,6 +97,25 @@ public class SignUp extends AppCompatActivity {
     public static Intent launcheME(Context ctx)
     {
         return new Intent(ctx, SignUp.class);
+    }
+
+    public void signUp(String email, String password){
+        if(email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
+        }else{
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(SignUp.this, "Se ha registrado con éxito", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else{
+                                Toast.makeText(SignUp.this, "El usuario ya se encuentra registrado", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
     }
 
     public void signUp()
