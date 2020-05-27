@@ -38,6 +38,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.spark.submitbutton.SubmitButton;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkButtonBuilder;
@@ -46,7 +52,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 
 public class ReservaActivity extends AppCompatActivity {
@@ -63,6 +71,9 @@ public class ReservaActivity extends AppCompatActivity {
     private Calendar calendario = Calendar.getInstance();
     private boolean reservaButtonTouched, dateSelected;
     private boolean verReservasBtnTouched, timeSelected;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+    boolean found = false;
 
 
     @Override
@@ -226,7 +237,7 @@ public class ReservaActivity extends AppCompatActivity {
         btnHacerReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!verificarSiYaReservo())
+                if(!verificarYaReservado())
                 {
                     btnHacerReserva.setBackgroundResource(R.drawable.reserva_exitosa_button);
                     String dia = daySelected + "";
@@ -236,7 +247,7 @@ public class ReservaActivity extends AppCompatActivity {
                     String m = minuteSelected + "0";
                     String fecha = dia + "/" + mes + "/" + año;
                     String hora = h + ":" + m;
-                    GuardarReserva(userData[0], fecha, hora);
+                    Agregar(userData[0], fecha, hora);
                     btnHacerReserva.setEnabled(false);
                     btnHacerReserva.setClickable(false);
                     btnReservar.setEnabled(true);
@@ -368,6 +379,15 @@ public class ReservaActivity extends AppCompatActivity {
         }catch (Exception ex){
             Toast.makeText(this, "Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void Agregar(String email, String date, String hour){
+        Map<String, Object> datos = new HashMap<>();
+        datos.put("Email", email);
+        datos.put("Fecha", date);
+        datos.put("Hora", hour);
+        myRef.child("Reservas").push().setValue(datos);
+        Toast.makeText(this, "Reserva agregada", Toast.LENGTH_SHORT).show();
     }
 
     private void makeDialogs(int whichOne)
@@ -735,6 +755,29 @@ public class ReservaActivity extends AppCompatActivity {
         {
             Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
         }
+        return found;
+    }
+
+    private boolean verificarYaReservado(){
+        Query query = myRef.child("Reservas");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Reserva reserva = snapshot.getValue(Reserva.class);
+                    String email =reserva.getEmail();
+                    if(email.equalsIgnoreCase(userData[0])){
+                        found = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return found;
     }
 

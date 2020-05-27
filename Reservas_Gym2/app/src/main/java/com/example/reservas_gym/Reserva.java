@@ -4,21 +4,25 @@ public class Reserva {
     /*
     Atributos de la reserva
      */
-    private String name;
-    private String lastname;
-    private String id;
-    private String date;
-    private String hour;
+    private String Name;
+    private String Lastname;
+    private String Email;
+    private String Date;
+    private String Hour;
 
     /*
     Constructor de la clase
      */
-    public Reserva(String name, String lastname, String id, String date, String hour){
+    public Reserva(String name, String lastname, String email, String date, String hour){
         setName(name);
         setLastname(lastname);
-        setId(id);
+        setEmail(email);
         setDate(date);
         setHour(hour);
+    }
+
+    public Reserva(){
+
     }
 
     /*
@@ -26,47 +30,47 @@ public class Reserva {
      */
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getLastname() {
-        return lastname;
+        return Lastname;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.Lastname = lastname;
     }
 
-    public String getId() {
-        return id;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.Email = email;
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.Date = date;
     }
 
     public String getReservationInfo()
     {
-        return (name + " " + lastname + " \n" + "Con ID: " + id + "\n" + "Fecha de reserva: " + date + "\n" + "Hora de reserva: " + hour);
+        return (Name + " " + Lastname + " \n" + "Con ID: " + Email + "\n" + "Fecha de reserva: " + Date + "\n" + "Hora de reserva: " + Hour);
     }
 
     public String getHour() {
-        return hour;
+        return Hour;
     }
 
     public void setHour(String hour) {
-        this.hour = hour;
+        this.Hour = hour;
     }
 }
