@@ -99,7 +99,7 @@ public class SignUp extends AppCompatActivity {
         return new Intent(ctx, SignUp.class);
     }
 
-    public void signUp(String email, String password){
+    private void signUp(String email, String password){
         if(email.isEmpty() || password.isEmpty()){
             Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
         }else{
@@ -111,7 +111,7 @@ public class SignUp extends AppCompatActivity {
                                 Toast.makeText(SignUp.this, "Se ha registrado con éxito", Toast.LENGTH_SHORT).show();
                                 finish();
                             }else{
-                                Toast.makeText(SignUp.this, "El usuario ya se encuentra registrado", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp.this, "No se pudo completar el registro: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

@@ -50,6 +50,7 @@ import com.varunest.sparkbutton.SparkButtonBuilder;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +74,7 @@ public class ReservaActivity extends AppCompatActivity {
     private boolean verReservasBtnTouched, timeSelected;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    private ArrayList<String> emails = new ArrayList<>();
     boolean found = false;
 
 
@@ -237,7 +239,8 @@ public class ReservaActivity extends AppCompatActivity {
         btnHacerReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!verificarYaReservado())
+                CargarDatos();
+                if(!verificar())
                 {
                     btnHacerReserva.setBackgroundResource(R.drawable.reserva_exitosa_button);
                     String dia = daySelected + "";
@@ -756,6 +759,44 @@ public class ReservaActivity extends AppCompatActivity {
             Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
         }
         return found;
+    }
+
+    private void CargarDatos(){
+        myRef.child("Reservas").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(final DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    myRef.child("Reservas").child(snapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Reserva reserva = snapshot.getValue(Reserva.class);
+                            String email  =reserva.getEmail();
+
+                            emails.add(email);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private boolean verificar(){
+        for(String e : emails){
+            if(e.equalsIgnoreCase(userData[0])){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean verificarYaReservado(){
