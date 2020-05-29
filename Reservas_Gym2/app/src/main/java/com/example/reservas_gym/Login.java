@@ -147,7 +147,7 @@ public class Login extends AppCompatActivity {
                                 launchReserva(userData);
                                 Toast.makeText(Login.this, "Se ha ingresado con éxito", Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(Login.this, "No se pudo completar el ingreso", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "No se pudo completar el ingreso: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                         }
